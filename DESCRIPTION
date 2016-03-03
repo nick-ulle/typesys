@@ -1,0 +1,23 @@
+Package: typesys
+Title: General-purpose Abstract Type System
+Version: 0.1-0
+Authors@R: person("Nick", "Ulle", email = "nick.ulle@gmail.com", role = c("aut", "cre"))
+Description: This package provides an abstraction of common data types, so that
+    they can be queried and manipulated using a unified interface. The primary goal
+    is to wrap types from programming languages (especially C and LLVM), but markup
+    languages and data structures may also be supported. In other words, the types
+    in this package are general enough that they should work in many applications.
+Depends:
+    R (>= 3.2.3)
+License: GPL-2
+LazyData: true
+Suggests:
+    testthat
+Collate:
+    'generics.R'
+    'types.R'
+    'atomic_types.R'
+    'composite_types.R'
+    'conditional_type.R'
+    'legacy.R'
+RoxygenNote: 5.0.1
