@@ -44,8 +44,8 @@ ConditionalType = function(handler = function(args) {})
 #'
 #' Push a quoted condition onto the stack of conditions in a ConditionalType.
 #'
+#' @export
 pushCondition_q = function(self, condition, if_type, else_type)
-  # Push a new condition onto the ConditionalType.
 {
   body = body(self@handler)
 
