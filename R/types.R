@@ -31,7 +31,7 @@ setClass("Type", contains = "VIRTUAL",
     value = "ANY"
   ),
   prototype = list(
-    contexts = "",
+    contexts = character(0),
     value = UnknownValue()
   )
 )
@@ -57,7 +57,7 @@ setClassUnion("list|Type", c("list", "Type"))
 #' @exportClass CompositeType
 setClass("CompositeType", contains = c("Type", "VIRTUAL"),
   slots = list(
-    types = "list|Type"
+    types = "list"
   )
 )
 
@@ -120,6 +120,40 @@ setClass("UnionType", contains = "Type",
 
 # Methods
 # =======
+
+#' @export
+setMethod("show", signature(object = "Type"),
+  function(object) cat(to_string(object), "\n")
+)
+
+
+# Print out 
+#   RecordType ()
+#     IntegerType (index)
+#
+#' @export
+setMethod("to_string", signature(x = "Type"),
+  function(x, ...) {
+    type_msg = class(x)[[1]]
+    context_msg = paste0(x@contexts, collapse = ", ")
+    sprintf("%s {%s}", type_msg, context_msg)
+  }
+)
+
+#' @export
+setMethod("to_string", signature(x = "CompositeType"),
+  function(x, ...) {
+    msg = callNextMethod()
+
+    # Get and indent strings for subtypes.
+    types_msg = sapply(x@types, to_string)
+    types_msg = gsub("(^|\n)", "\\1    ", types_msg)
+    types_msg = paste0(types_msg, collapse = "\n")
+
+    sprintf("%s\n%s", msg, types_msg)
+  }
+)
+
 
 #' @export
 setMethod("same_type", signature(x = "Type"),

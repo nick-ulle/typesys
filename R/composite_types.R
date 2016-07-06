@@ -14,9 +14,6 @@ RecordType = function(types) {
 #' @rdname RecordType
 #' @exportClass RecordType
 setClass("RecordType", contains = "CompositeType",
-  slots = list(
-    types = "list"
-  ),
   validity = function(object) {
     messages = character(0)
 
@@ -37,19 +34,20 @@ setClass("RecordType", contains = "CompositeType",
 #'
 #' @export
 ArrayType = function(type, dimension) {
-  new("ArrayType", types = type, dimension = as.integer(dimension))
+  new("ArrayType", types = list(type), dimension = as.integer(dimension))
 }
 
 #' @rdname ArrayType
 #' @exportClass ArrayType
 setClass("ArrayType", contains = "CompositeType",
   slots = list(
-    # Cannot restrict to AtomicType because of UnknownType.
-    types = "Type",
     dimension = "integer"
   ),
   validity = function(object) {
     messages = character(0)
+
+    if (!is(object@types[[1]], "Type"))
+      messages = c(messages, "type must extend class Type.")
 
     if (length(object@dimension) < 1)
       messages = c(messages, "dimension must have length >= 1.")
@@ -64,24 +62,30 @@ setClass("ArrayType", contains = "CompositeType",
 
 
 #' @export
+setMethod("to_string", signature(x = "ArrayType"),
+  function(x, ...) {
+    msg = callNextMethod()
+
+    dim_msg = paste0(x@dimension, collapse = "x")
+    dim_msg = sprintf("ArrayType [%s]", dim_msg)
+    sub("ArrayType", dim_msg, msg)
+  }
+)
+
+
+#' @export
 setMethod("element_type", signature(self = "ArrayType"),
-  function(self) self@types
+  function(self) self@types[[1]]
 )
 
 
 #' @export
 setMethod("element_type<-", signature(self = "ArrayType"),
   function(self, value) {
-    self@types = value
+    self@types = list(value)
     validObject(self)
     return(self)
   }
-)
-
-
-#' @export
-setMethod("element_type_all", signature(self = "ArrayType"),
-  function(self) list(self@types)
 )
 
 

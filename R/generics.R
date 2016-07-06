@@ -1,6 +1,16 @@
 # Description:
 #   S4 generics for type classes.
 
+#' Convert a Type to a Character String
+#'
+#' This function converts a Type to a character string.
+#'
+#' @export
+setGeneric("to_string",
+  function(x, ...) standardGeneric("to_string"),
+  valueClass = "character"
+)
+
 
 #' Test Types for Equality
 #'
