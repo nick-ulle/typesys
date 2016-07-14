@@ -5,4 +5,5 @@
 
 
 #' @import methods
+#' @import R6
 NULL

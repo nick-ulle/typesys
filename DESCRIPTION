@@ -14,10 +14,12 @@ LazyData: true
 Depends:
     R (>= 3.2.0)
 Imports:
-    methods
+    methods,
+    R6
 Suggests:
     testthat
 Collate:
+    'scope.R'
     'generics.R'
     'types.R'
     'atomic_types.R'

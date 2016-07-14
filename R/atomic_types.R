@@ -1,5 +1,6 @@
 
 #' @include types.R
+#' @include scope.R
 NULL
 
 # Numeric Types
