@@ -10,13 +10,17 @@
 NULL
 
 
+# NOTE: This base class is a workaround because R assumes empty base classes
+# are virtual.
+setClass("Value")
+
 #' Unknown Value
 #'
 #' Basic unknown value class. Later this could be expanded to a reference
 #' system.
 #' @export
 UnknownValue = function() new("UnknownValue")
-setClass("UnknownValue", contains = "NULL")
+setClass("UnknownValue", contains = "Value")
 
 
 #' Type
@@ -127,6 +131,9 @@ setMethod("show", signature(object = "Type"),
 )
 
 
+setMethod("to_string", signature(x = "ANY"), toString)
+
+
 # Print out 
 #   RecordType ()
 #     IntegerType (index)
@@ -139,6 +146,7 @@ setMethod("to_string", signature(x = "Type"),
     sprintf("%s {%s}", type_msg, context_msg)
   }
 )
+
 
 #' @export
 setMethod("to_string", signature(x = "CompositeType"),
