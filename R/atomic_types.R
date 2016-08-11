@@ -30,14 +30,14 @@ setClass("FunctionType", contains = "AtomicType",
 
 
 #' @export
-setMethod("to_string", signature(x = "FunctionType"),
-  function(x, ...) {
-    msg = callNextMethod()
+setMethod("format", signature(x = "FunctionType"),
+  function(x, indent = 0, ...) {
+    return_msg = format(x@return_type, indent + 4)
+    return_msg = sprintf("%*s@return_type\n%s", indent + 2, "", return_msg)
 
-    types_msg = to_string(x@return_type)
-    types_msg = gsub("(^|\n)", "\\1    ", types_msg)
+    scope_msg = sprintf("%*s@scope %s", indent + 2, "", "<TODO>")
 
-    sprintf("%s\n    variables\n\n    returns\n%s", msg, types_msg)
+    sprintf("%s\n%s\n\n%s", callNextMethod(), return_msg, scope_msg)
   }
 )
 

@@ -4,7 +4,7 @@
 \alias{Scope}
 \title{Scope}
 \usage{
-Scope()
+Scope(parent = NULL)
 }
 \description{
 This R6 class represents a scope within a program. In particular, a scope

@@ -62,18 +62,6 @@ setClass("ArrayType", contains = "CompositeType",
 
 
 #' @export
-setMethod("to_string", signature(x = "ArrayType"),
-  function(x, ...) {
-    msg = callNextMethod()
-
-    dim_msg = paste0(x@dimension, collapse = "x")
-    dim_msg = sprintf("ArrayType [%s]", dim_msg)
-    sub("ArrayType", dim_msg, msg)
-  }
-)
-
-
-#' @export
 setMethod("element_type", signature(self = "ArrayType"),
   function(self) self@types[[1]]
 )

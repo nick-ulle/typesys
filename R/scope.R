@@ -33,7 +33,7 @@ Scope = function(parent = NULL) {
       else if (force)
         private$names[[index]] = type
       else
-        stop(sprintf("name '%s' already contains '%s'", name, to_string(type)))
+        stop(sprintf("name '%s' already contains '%s'", name, format(type)))
 
       # FIXME:
       #else if ( force || is(private$names[[index]], "UnknownType") )

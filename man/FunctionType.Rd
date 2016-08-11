@@ -6,7 +6,7 @@
 \alias{FunctionType-class}
 \title{Function Type}
 \usage{
-FunctionType(...)
+FunctionType(return_type, scope)
 }
 \description{
 A function.

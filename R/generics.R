@@ -1,13 +1,13 @@
 # Description:
 #   S4 generics for type classes.
 
-#' Convert a Type to a Character String
+#' Format a Type for Printing
 #'
 #' This function converts a Type to a character string.
 #'
 #' @export
-setGeneric("to_string",
-  function(x, ...) standardGeneric("to_string"),
+setGeneric("format",
+  function(x, indent = 0, ...) standardGeneric("format"),
   valueClass = "character"
 )
 

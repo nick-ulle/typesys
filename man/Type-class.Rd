@@ -19,5 +19,7 @@ Parent class for all types.
 
 \describe{
 \item{\code{value}}{A value, for constant folding}
+
+\item{\code{contexts}}{(character) Contextual information about the type.}
 }}
 

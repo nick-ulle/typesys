@@ -28,6 +28,7 @@ setClass("UnknownValue", contains = "Value")
 #' Parent class for all types.
 #'
 #' @slot value A value, for constant folding
+#' @slot contexts (character) Contextual information about the type.
 #' @exportClass Type
 setClass("Type", contains = "VIRTUAL",
   slots = list(
@@ -127,11 +128,11 @@ setClass("UnionType", contains = "Type",
 
 #' @export
 setMethod("show", signature(object = "Type"),
-  function(object) cat(to_string(object), "\n")
+  function(object) cat(format(object, indent = 0), "\n")
 )
 
 
-setMethod("to_string", signature(x = "ANY"), toString)
+setMethod("format", signature(x = "ANY"), format)
 
 
 # Print out 
@@ -139,26 +140,29 @@ setMethod("to_string", signature(x = "ANY"), toString)
 #     IntegerType (index)
 #
 #' @export
-setMethod("to_string", signature(x = "Type"),
-  function(x, ...) {
+setMethod("format", signature(x = "Type"),
+  function(x, indent = 0, ...) {
     type_msg = class(x)[[1]]
-    context_msg = paste0(x@contexts, collapse = ", ")
-    sprintf("%s {%s}", type_msg, context_msg)
+
+    dim = dim(x)
+    dim_msg =
+      if (is.null(dim)) ""
+      else sprintf(" [%s]", paste0(dim, collapse = "x"))
+
+    contexts_msg = paste0(x@contexts, collapse = ", ")
+
+    sprintf("%*s%s%s {%s}", indent, "", type_msg, dim_msg, contexts_msg)
   }
 )
 
 
 #' @export
-setMethod("to_string", signature(x = "CompositeType"),
-  function(x, ...) {
-    msg = callNextMethod()
-
-    # Get and indent strings for subtypes.
-    types_msg = sapply(x@types, to_string)
-    types_msg = gsub("(^|\n)", "\\1    ", types_msg)
+setMethod("format", signature(x = "CompositeType"),
+  function(x, indent = 0, ...) {
+    types_msg = vapply(x@types, format, character(1), indent = indent + 2)
     types_msg = paste0(types_msg, collapse = "\n")
 
-    sprintf("%s\n%s", msg, types_msg)
+    sprintf("%s\n%s", callNextMethod(), types_msg)
   }
 )
 
