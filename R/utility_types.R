@@ -36,10 +36,38 @@ setClass("Union", contains = "Type",
 #' @export
 setMethod("format", signature(x = "Union"),
   function(x, indent = 0, ...) {
-    sprintf("Union(%s)", paste(x@types, collapse = ", "))
+    args = vapply(x@types, format, character(1))
+    sprintf("Union(%s)", paste(args, collapse = ", "))
   }
 )
 
+#' Call
+#'
+#' A call to a function.
+#'
+#' @export
+Call = function(func, ...) {
+  new("Call", func = func, args = list(...))
+}
+
+#' @slot func The name of the function to call
+#' @slot args A list of argument types
+#' @rdname Call
+#' @exportClass Call
+setClass("Call", contains = "Type",
+  slots = list(
+    func = "character",
+    args = "list"
+  )
+)
+
+#' @export
+setMethod("format", signature(x = "Call"),
+  function(x, indent = 0, ...) {
+    args = vapply(x@args, format, character(1))
+    sprintf("%s(%s)", x@func, paste(args, collapse = ", "))
+  }
+)
 
 #' Unknown Type
 #'
