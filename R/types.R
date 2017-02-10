@@ -166,6 +166,14 @@ setMethod("format", signature(x = "CompositeType"),
 
 
 #' @export
+setMethod("format", signature(x = "Union"),
+  function(x, indent = 0, ...) {
+    sprintf("Union(%s)", paste(x@types, collapse = ", "))
+  }
+)
+
+
+#' @export
 setMethod("same_type", signature(x = "Type"),
   function(x, y) is(x, class(y))
 )
