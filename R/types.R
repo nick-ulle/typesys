@@ -94,32 +94,33 @@ UndefinedType = function() new("UndefinedType")
 setClass("UndefinedType", contains = "Type")
 
 
-#' Union Type
+#' Union
 #'
 #' A union of two or more types.
 #'
 #' @export
-UnionType = function(...) {
-  new("UnionType", types = list(...))
+Union = function(...) {
+  new("Union", types = list(...))
 }
 
-#' @slot types A list of possible types.
-#' @rdname UnionType
-#' @exportClass UnionType
-setClass("UnionType", contains = "Type",
+#' @slot types A list of types.
+#' @rdname Union
+#' @exportClass Union
+setClass("Union", contains = "Type",
   slots = list(
     types = "list"
-  ),
-  validity = function(object) {
-    messages = character(0)
+  )
 
-    is_type = sapply(object@types, is, "Type")
-    if (!all(is_type))
-      messages = c(messages, "types must have superclass Type.")
+  #validity = function(object) {
+  #  messages = character(0)
 
-    if (length(messages) > 0) messages
-    else TRUE
-  }
+  #  is_type = sapply(object@types, is, "Type")
+  #  if (!all(is_type))
+  #    messages = c(messages, "types must have superclass Type.")
+
+  #  if (length(messages) > 0) messages
+  #  else TRUE
+  #}
 )
 
 
