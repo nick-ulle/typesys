@@ -1,5 +1,6 @@
 # Description:
-#   S4 generics for type classes.
+#
+# S4 generics for type classes.
 
 #' Format a Type for Printing
 #'

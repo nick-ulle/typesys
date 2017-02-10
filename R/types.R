@@ -1,9 +1,6 @@
 # Description:
-#   S4 classes for types.
-
-# TODO:
-#   * Add method for setting element types.
-#   * Update validity for composite types.
+#
+# Abstract base class definitions for types.
 
 
 #' @include generics.R
@@ -67,63 +64,6 @@ setClass("CompositeType", contains = c("Type", "VIRTUAL"),
 )
 
 
-#' Unknown Type
-#'
-#' "Top" type in type lattice, which indicates a variable whose type is
-#' unknown.
-#'
-#' @export
-UnknownType = function() new("UnknownType")
-
-#' @rdname UnknownType
-#' @exportClass UnknownType
-setClass("UnknownType", contains = "Type")
-
-
-# TODO: Incorporate conditional typing.
-#' Undefined Type
-#'
-#' "Bottom" type in the type lattice, which indicates a variable which is
-#' nonexistent or has not yet been initialized.
-#'
-#' @export
-UndefinedType = function() new("UndefinedType")
-
-#' @rdname UndefinedType
-#' @exportClass UndefinedType
-setClass("UndefinedType", contains = "Type")
-
-
-#' Union
-#'
-#' A union of two or more types.
-#'
-#' @export
-Union = function(...) {
-  new("Union", types = list(...))
-}
-
-#' @slot types A list of types.
-#' @rdname Union
-#' @exportClass Union
-setClass("Union", contains = "Type",
-  slots = list(
-    types = "list"
-  )
-
-  #validity = function(object) {
-  #  messages = character(0)
-
-  #  is_type = sapply(object@types, is, "Type")
-  #  if (!all(is_type))
-  #    messages = c(messages, "types must have superclass Type.")
-
-  #  if (length(messages) > 0) messages
-  #  else TRUE
-  #}
-)
-
-
 # Methods
 # =======
 
@@ -161,14 +101,6 @@ setMethod("format", signature(x = "CompositeType"),
     types_msg = paste0(types_msg, collapse = "\n")
 
     sprintf("%s\n%s", callNextMethod(), types_msg)
-  }
-)
-
-
-#' @export
-setMethod("format", signature(x = "Union"),
-  function(x, indent = 0, ...) {
-    sprintf("Union(%s)", paste(x@types, collapse = ", "))
   }
 )
 

@@ -1,6 +1,11 @@
+# Description:
+#
+# Definitions for concrete, parametric types.
+
 
 #' @include types.R
 NULL
+
 
 #' Record Type
 #'

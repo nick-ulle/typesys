@@ -1,3 +1,7 @@
+# Description:
+#
+# Definitions for concrete, non-parametric types.
+
 
 #' @include types.R
 #' @include scope.R
