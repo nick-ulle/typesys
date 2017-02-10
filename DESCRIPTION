@@ -24,7 +24,6 @@ Collate:
     'types.R'
     'atomic_types.R'
     'composite_types.R'
-    'conditional_type.R'
-    'legacy.R'
     'typesys.R'
+    'utility_types.R'
 RoxygenNote: 5.0.1
