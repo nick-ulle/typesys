@@ -4,7 +4,7 @@
 \alias{format}
 \title{Format a Type for Printing}
 \usage{
-format(x, indent = 0, ...)
+format(x, ...)
 }
 \description{
 This function converts a Type to a character string.

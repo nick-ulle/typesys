@@ -6,10 +6,7 @@
 #' This function converts a Type to a character string.
 #'
 #' @export
-setGeneric("format",
-  function(x, indent = 0, ...) standardGeneric("format"),
-  valueClass = "character"
-)
+setGeneric("format")
 
 
 #' Test Types for Equality

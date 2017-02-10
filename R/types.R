@@ -133,9 +133,6 @@ setMethod("show", signature(object = "Type"),
 )
 
 
-setMethod("format", signature(x = "ANY"), format)
-
-
 # Print out 
 #   RecordType ()
 #     IntegerType (index)
