@@ -52,11 +52,11 @@ setMethod("format", signature(x = "FunctionType"),
 setClass("NumberType", contains = c("AtomicType", "VIRTUAL"))
 
 .IntegerType =
-  setClass("IntegerType", contains = "AtomicType")
+  setClass("IntegerType", contains = "NumberType")
 .RealType =
-  setClass("RealType", contains = "AtomicType")
+  setClass("RealType", contains = "NumberType")
 .ComplexType =
-  setClass("ComplexType", contains = "AtomicType")
+  setClass("ComplexType", contains = "NumberType")
 
 #' @export
 IntegerType = function(...) .IntegerType(...)
