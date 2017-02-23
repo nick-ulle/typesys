@@ -10,7 +10,8 @@
 #'
 #' @export
 Union = function(...) {
-  new("Union", types = list(...))
+  u = new("Union", types = list(...))
+  simplify(u)
 }
 
 #' @slot types A list of types.
@@ -31,6 +32,36 @@ setClass("Union", contains = "Type",
   #  if (length(messages) > 0) messages
   #  else TRUE
   #}
+)
+
+#' @export
+setMethod("simplify", signature(x = "Union"),
+  function(x) {
+    # FIXME: Remove extraneous types.
+    types = x@types
+    same_type = vapply(types[-1], identical, logical(1), types[[1]])
+
+    if (all(same_type))
+      simplified = types[[1]]
+    else
+      simplified = x
+
+    return (simplified)
+  }
+)
+
+#' @export
+setMethod("[[", signature(x = "Union"),
+  function(x, i, ...) {
+    return (x@types[[i]])
+  }
+)
+
+#' @export
+setMethod("length", signature(x = "Union"),
+  function(x) {
+    return (length(x@types))
+  }
 )
 
 #' @export
