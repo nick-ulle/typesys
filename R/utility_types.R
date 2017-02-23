@@ -85,7 +85,7 @@ Call = function(func, ...) {
 #' @slot args A list of argument types
 #' @rdname Call
 #' @exportClass Call
-setClass("Call", contains = "Type",
+setClass("Call",
   slots = list(
     func = "character",
     args = "list"
