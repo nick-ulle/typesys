@@ -3,18 +3,10 @@
 \docType{class}
 \name{Type-class}
 \alias{Type-class}
-\alias{length,Type-method}
 \title{Type}
-\usage{
-\S4method{length}{Type}(x)
-}
 \description{
 Parent class for all types.
 }
-\section{Methods (by generic)}{
-\itemize{
-\item \code{length}: Length of the type.
-}}
 \section{Slots}{
 
 \describe{

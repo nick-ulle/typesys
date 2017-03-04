@@ -9,4 +9,3 @@ has_context(object, context)
 \description{
 Check If Type Has Context
 }
-

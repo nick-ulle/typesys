@@ -9,4 +9,3 @@ format(x, ...)
 \description{
 This function converts a Type to a character string.
 }
-

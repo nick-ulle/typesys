@@ -3,7 +3,7 @@
 \docType{class}
 \name{Call}
 \alias{Call}
-\alias{Call-class}
+\alias{typesys::Call-class}
 \title{Call}
 \usage{
 Call(func, ...)

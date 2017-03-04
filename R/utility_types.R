@@ -10,14 +10,14 @@
 #'
 #' @export
 Union = function(...) {
-  u = new("Union", types = list(...))
+  u = new("typesys::Union", types = list(...))
   simplify(u)
 }
 
 #' @slot types A list of types.
 #' @rdname Union
-#' @exportClass Union
-setClass("Union", contains = "Type",
+#' @exportClass typesys::Union
+setClass("typesys::Union", contains = "typesys::Type",
   slots = list(
     types = "list"
   )
@@ -35,7 +35,7 @@ setClass("Union", contains = "Type",
 )
 
 #' @export
-setMethod("simplify", signature(x = "Union"),
+setMethod("simplify", signature(x = "typesys::Union"),
   function(x) {
     # FIXME: Remove extraneous types.
     types = x@types
@@ -51,21 +51,21 @@ setMethod("simplify", signature(x = "Union"),
 )
 
 #' @export
-setMethod("[[", signature(x = "Union"),
+setMethod("[[", signature(x = "typesys::Union"),
   function(x, i, ...) {
     return (x@types[[i]])
   }
 )
 
 #' @export
-setMethod("length", signature(x = "Union"),
+setMethod("length", signature(x = "typesys::Union"),
   function(x) {
     return (length(x@types))
   }
 )
 
 #' @export
-setMethod("format", signature(x = "Union"),
+setMethod("format", signature(x = "typesys::Union"),
   function(x, indent = 0, ...) {
     args = vapply(x@types, format, character(1))
     sprintf("Union(%s)", paste(args, collapse = ", "))
@@ -78,14 +78,14 @@ setMethod("format", signature(x = "Union"),
 #'
 #' @export
 Call = function(func, ...) {
-  new("Call", func = func, args = list(...))
+  new("typesys::Call", func = func, args = list(...))
 }
 
 #' @slot func The name of the function to call
 #' @slot args A list of argument types
 #' @rdname Call
-#' @exportClass Call
-setClass("Call",
+#' @exportClass typesys::Call
+setClass("typesys::Call",
   slots = list(
     func = "character",
     args = "list"
@@ -93,7 +93,7 @@ setClass("Call",
 )
 
 #' @export
-setMethod("format", signature(x = "Call"),
+setMethod("format", signature(x = "typesys::Call"),
   function(x, indent = 0, ...) {
     args = vapply(x@args, format, character(1))
     sprintf("%s(%s)", x@func, paste(args, collapse = ", "))
@@ -106,11 +106,11 @@ setMethod("format", signature(x = "Call"),
 #' unknown.
 #'
 #' @export
-UnknownType = function() new("UnknownType")
+UnknownType = function() new("typesys::UnknownType")
 
 #' @rdname UnknownType
-#' @exportClass UnknownType
-setClass("UnknownType", contains = "Type")
+#' @exportClass typesys::UnknownType
+setClass("typesys::UnknownType", contains = "typesys::Type")
 
 
 # TODO: Incorporate conditional typing.
@@ -120,8 +120,8 @@ setClass("UnknownType", contains = "Type")
 #' nonexistent or has not yet been initialized.
 #'
 #' @export
-UndefinedType = function() new("UndefinedType")
+UndefinedType = function() new("typesys::UndefinedType")
 
 #' @rdname UndefinedType
-#' @exportClass UndefinedType
-setClass("UndefinedType", contains = "Type")
+#' @exportClass typesys::UndefinedType
+setClass("typesys::UndefinedType", contains = "typesys::Type")

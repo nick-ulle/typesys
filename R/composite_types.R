@@ -13,16 +13,16 @@ NULL
 #'
 #' @export
 RecordType = function(types) {
-  new("RecordType", types = types)
+  new("typesys::RecordType", types = types)
 }
 
 #' @rdname RecordType
-#' @exportClass RecordType
-setClass("RecordType", contains = "CompositeType",
+#' @exportClass typesys::RecordType
+setClass("typesys::RecordType", contains = "typesys::CompositeType",
   validity = function(object) {
     messages = character(0)
 
-    is_type = sapply(object@types, is, "Type")
+    is_type = sapply(object@types, is, "typesys::Type")
     if (!all(is_type))
       messages = c(messages, "types must have superclass Type.")
 
@@ -39,20 +39,22 @@ setClass("RecordType", contains = "CompositeType",
 #'
 #' @export
 ArrayType = function(type, dimension) {
-  new("ArrayType", types = list(type), dimension = as.integer(dimension))
+  new("typesys::ArrayType",
+    types = list(type), dimension = as.integer(dimension)
+  )
 }
 
 #' @rdname ArrayType
-#' @exportClass ArrayType
-setClass("ArrayType", contains = "CompositeType",
+#' @exportClass typesys::ArrayType
+setClass("typesys::ArrayType", contains = "typesys::CompositeType",
   slots = list(
     dimension = "integer"
   ),
   validity = function(object) {
     messages = character(0)
 
-    if (!is(object@types[[1]], "Type"))
-      messages = c(messages, "type must extend class Type.")
+    if (!is(object@types[[1]], "typesys::Type"))
+      messages = c(messages, "type must extend class typesys::Type.")
 
     if (length(object@dimension) < 1)
       messages = c(messages, "dimension must have length >= 1.")
@@ -67,13 +69,13 @@ setClass("ArrayType", contains = "CompositeType",
 
 
 #' @export
-setMethod("element_type", signature(self = "ArrayType"),
+setMethod("element_type", signature(self = "typesys::ArrayType"),
   function(self) self@types[[1]]
 )
 
 
 #' @export
-setMethod("element_type<-", signature(self = "ArrayType"),
+setMethod("element_type<-", signature(self = "typesys::ArrayType"),
   function(self, value) {
     self@types = list(value)
     validObject(self)
@@ -83,12 +85,12 @@ setMethod("element_type<-", signature(self = "ArrayType"),
 
 
 #' @export
-setMethod("length", signature(x = "ArrayType"),
+setMethod("length", signature(x = "typesys::ArrayType"),
   function(x) prod(x@dimension)
 )
 
 
 #' @export
-setMethod("dim", signature(x = "ArrayType"),
+setMethod("dim", signature(x = "typesys::ArrayType"),
   function(x) x@dimension
 )

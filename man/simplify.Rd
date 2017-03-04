@@ -9,4 +9,3 @@ simplify(x)
 \description{
 This function collapses Unions of the same type.
 }
-

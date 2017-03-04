@@ -3,7 +3,7 @@
 \docType{class}
 \name{ArrayType}
 \alias{ArrayType}
-\alias{ArrayType-class}
+\alias{typesys::ArrayType-class}
 \title{Array Type}
 \usage{
 ArrayType(type, dimension)
@@ -12,4 +12,3 @@ ArrayType(type, dimension)
 A dimensioned container for homogeneous types. This is a superclass for
 matrices.
 }
-

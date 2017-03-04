@@ -19,22 +19,22 @@ FunctionType = function(return_type, scope) {
   if (missing(scope))
     scope = NULL
 
-  new("FunctionType", return_type = return_type, scope = scope)
+  new("typesys::FunctionType", return_type = return_type, scope = scope)
 }
 
 
 #' @rdname FunctionType
-#' @exportClass FunctionType
-setClass("FunctionType", contains = "AtomicType",
+#' @exportClass typesys::FunctionType
+setClass("typesys::FunctionType", contains = "typesys::AtomicType",
   slots = list(
-    return_type = "Type",
-    scope = "MaybeScope"
+    return_type = "typesys::Type",
+    scope = "typesys::MaybeScope"
   )
 )
 
 
 #' @export
-setMethod("format", signature(x = "FunctionType"),
+setMethod("format", signature(x = "typesys::FunctionType"),
   function(x, indent = 0, ...) {
     return_msg = format(x@return_type, indent + 4)
     return_msg = sprintf("%*s@return_type\n%s", indent + 2, "", return_msg)
@@ -49,49 +49,42 @@ setMethod("format", signature(x = "FunctionType"),
 # Numeric Types
 # =============
 
-setClass("NumberType", contains = c("AtomicType", "VIRTUAL"))
-
-.IntegerType =
-  setClass("IntegerType", contains = "NumberType")
-.RealType =
-  setClass("RealType", contains = "NumberType")
-.ComplexType =
-  setClass("ComplexType", contains = "NumberType")
+setClass("typesys::NumberType", contains = c("typesys::AtomicType", "VIRTUAL"))
 
 #' @export
-IntegerType = function(...) .IntegerType(...)
+IntegerType = function(...) new("typesys::IntegerType", ...)
+setClass("typesys::IntegerType", contains = "typesys::NumberType")
+
 #' @export
-RealType = function(...) .RealType(...)
+RealType = function(...) new("typesys::RealType", ...)
+setClass("typesys::RealType", contains = "typesys::NumberType")
+
 #' @export
-ComplexType = function(...) .ComplexType(...)
+ComplexType = function(...) new("typesys::ComplexType", ...)
+setClass("typesys::ComplexType", contains = "typesys::NumberType")
 
 
 # String Types
 # ============
 
-setClass("TextType", contains = c("AtomicType", "VIRTUAL"))
-
-.StringType =
-  setClass("StringType", contains = "TextType")
-.CharacterType =
-  setClass("CharacterType", contains = "TextType") 
+setClass("typesys::TextType", contains = c("typesys::AtomicType", "VIRTUAL"))
 
 #' @export
-StringType = function(...) .StringType(...)
+StringType = function(...) new("typesys::StringType", ...)
+setClass("typesys::StringType", contains = "typesys::TextType")
+
 #' @export
-CharacterType = function(...) .CharacterType(...)
+CharacterType = function(...) new("typesys::CharacterType", ...)
+setClass("typesys::CharacterType", contains = "typesys::TextType")
 
 
 # Other Atomic Types
 # ==================
 
-.NullType =
-  setClass("NullType", contains = "AtomicType")
-
-.BooleanType =
-  setClass("BooleanType", contains = "AtomicType")
+#' @export
+NullType = function(...) new("typesys::NullType", ...)
+setClass("typesys::NullType", contains = "typesys::AtomicType")
 
 #' @export
-NullType = function(...) .NullType(...)
-#' @export
-BooleanType = function(...) .BooleanType(...)
+BooleanType = function(...) new("typesys::BooleanType", ...)
+setClass("typesys::BooleanType", contains = "typesys::AtomicType")

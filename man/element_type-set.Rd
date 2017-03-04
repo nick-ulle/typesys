@@ -9,4 +9,3 @@ element_type(self) <- value
 \description{
 For a container type, set the underlying element type.
 }
-

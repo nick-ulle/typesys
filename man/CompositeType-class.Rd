@@ -3,19 +3,11 @@
 \docType{class}
 \name{CompositeType-class}
 \alias{CompositeType-class}
-\alias{length,CompositeType-method}
 \title{Composite Type}
-\usage{
-\S4method{length}{CompositeType}(x)
-}
 \description{
 A container for other (possibly composite) types. This is a superclass for
 structures, lists, arrays, and matrices.
 }
-\section{Methods (by generic)}{
-\itemize{
-\item \code{length}: Length of the type.
-}}
 \section{Slots}{
 
 \describe{

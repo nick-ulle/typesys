@@ -3,7 +3,7 @@
 \docType{class}
 \name{UndefinedType}
 \alias{UndefinedType}
-\alias{UndefinedType-class}
+\alias{typesys::UndefinedType-class}
 \title{Undefined Type}
 \usage{
 UndefinedType()
@@ -12,4 +12,3 @@ UndefinedType()
 "Bottom" type in the type lattice, which indicates a variable which is
 nonexistent or has not yet been initialized.
 }
-

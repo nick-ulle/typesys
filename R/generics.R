@@ -42,7 +42,7 @@ setGeneric("same_type",
 #' @export
 setGeneric("element_type",
   function(self) standardGeneric("element_type"),
-  valueClass = "Type"
+  valueClass = "typesys::Type"
 )
 
 
@@ -64,6 +64,6 @@ setGeneric("element_type_all",
 #' @export
 setGeneric("element_type<-",
   function(self, value) standardGeneric("element_type<-"),
-  valueClass = "Type"
+  valueClass = "typesys::Type"
 )
 

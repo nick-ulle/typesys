@@ -13,7 +13,7 @@ Scope = function(parent = NULL) {
   return(scope)
 }
 
-.Scope = R6::R6Class("Scope",
+.Scope = R6::R6Class("typesys::Scope",
   # public ----------
   public = list(
     parent = NULL,
@@ -75,6 +75,6 @@ Scope = function(parent = NULL) {
   )
 )
 
-setOldClass("Scope")
-setClassUnion("MaybeScope", c("Scope", "NULL"))
+setOldClass("typesys::Scope")
+setClassUnion("typesys::MaybeScope", c("typesys::Scope", "NULL"))
 

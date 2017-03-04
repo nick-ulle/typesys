@@ -3,7 +3,7 @@
 \docType{class}
 \name{UnknownType}
 \alias{UnknownType}
-\alias{UnknownType-class}
+\alias{typesys::UnknownType-class}
 \title{Unknown Type}
 \usage{
 UnknownType()
@@ -12,4 +12,3 @@ UnknownType()
 "Top" type in type lattice, which indicates a variable whose type is
 unknown.
 }
-

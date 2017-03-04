@@ -9,15 +9,16 @@ NULL
 
 # NOTE: This base class is a workaround because R assumes empty base classes
 # are virtual.
-setClass("Value")
+setClass("typesys::Value")
 
 #' Unknown Value
 #'
 #' Basic unknown value class. Later this could be expanded to a reference
 #' system.
+#'
 #' @export
-UnknownValue = function() new("UnknownValue")
-setClass("UnknownValue", contains = "Value")
+UnknownValue = function() new("typesys::UnknownValue")
+setClass("typesys::UnknownValue", contains = "typesys::Value")
 
 
 #' Type
@@ -26,8 +27,10 @@ setClass("UnknownValue", contains = "Value")
 #'
 #' @slot value A value, for constant folding
 #' @slot contexts (character) Contextual information about the type.
-#' @exportClass Type
-setClass("Type", contains = "VIRTUAL",
+#'
+#' @name Type-class
+#' @exportClass typesys::Type
+setClass("typesys::Type", contains = "VIRTUAL",
   slots = list(
     contexts = "character",
     value = "ANY"
@@ -43,11 +46,12 @@ setClass("Type", contains = "VIRTUAL",
 #'
 #' A monomorphic scalar type.
 #'
-#' @exportClass AtomicType
-setClass("AtomicType", contains = c("Type", "VIRTUAL")) 
+#' @name AtomicType-class
+#' @exportClass typesys::AtomicType
+setClass("typesys::AtomicType", contains = c("typesys::Type", "VIRTUAL"))
 
 
-setClassUnion("list|Type", c("list", "Type"))
+setClassUnion("typesys::list|Type", c("list", "typesys::Type"))
 
 
 #' Composite Type
@@ -56,8 +60,10 @@ setClassUnion("list|Type", c("list", "Type"))
 #' structures, lists, arrays, and matrices.
 #'
 #' @slot types A named list of contained types.
-#' @exportClass CompositeType
-setClass("CompositeType", contains = c("Type", "VIRTUAL"),
+#'
+#' @name CompositeType-class
+#' @exportClass typesys::CompositeType
+setClass("typesys::CompositeType", contains = c("typesys::Type", "VIRTUAL"),
   slots = list(
     types = "list"
   )
@@ -68,7 +74,7 @@ setClass("CompositeType", contains = c("Type", "VIRTUAL"),
 # =======
 
 #' @export
-setMethod("show", signature(object = "Type"),
+setMethod("show", signature(object = "typesys::Type"),
   function(object) cat(format(object, indent = 0), "\n")
 )
 
@@ -76,9 +82,9 @@ setMethod("show", signature(object = "Type"),
 # Print out 
 #   RecordType ()
 #     IntegerType (index)
-#
+
 #' @export
-setMethod("format", signature(x = "Type"),
+setMethod("format", signature(x = "typesys::Type"),
   function(x, indent = 0, ...) {
     type_msg = class(x)[[1]]
 
@@ -95,7 +101,7 @@ setMethod("format", signature(x = "Type"),
 
 
 #' @export
-setMethod("format", signature(x = "CompositeType"),
+setMethod("format", signature(x = "typesys::CompositeType"),
   function(x, indent = 0, ...) {
     types_msg = vapply(x@types, format, character(1), indent = indent + 2)
     types_msg = paste0(types_msg, collapse = "\n")
@@ -106,13 +112,13 @@ setMethod("format", signature(x = "CompositeType"),
 
 
 #' @export
-setMethod("same_type", signature(x = "Type"),
+setMethod("same_type", signature(x = "typesys::Type"),
   function(x, y) is(x, class(y))
 )
 
 
 #' @export
-setMethod("same_type", signature(x = "CompositeType"),
+setMethod("same_type", signature(x = "typesys::CompositeType"),
   function(x, y) {
     same_class = is(x, class(y))
     if (!same_class)
@@ -129,39 +135,37 @@ setMethod("same_type", signature(x = "CompositeType"),
 
 
 #' @export
-setMethod("element_type", signature(self = "Type"),
+setMethod("element_type", signature(self = "typesys::Type"),
   function(self) self
 )
 
 
 #' @export
-setMethod("element_type", signature(self = "CompositeType"),
+setMethod("element_type", signature(self = "typesys::CompositeType"),
   function(self) stop("composite types may contain multiple element types.")
 )
     
 
 #' @export
-setMethod("element_type_all", signature(self = "Type"),
+setMethod("element_type_all", signature(self = "typesys::Type"),
   function(self) list(self)
 )
 
 
 #' @export
-setMethod("element_type_all", signature(self = "CompositeType"),
+setMethod("element_type_all", signature(self = "typesys::CompositeType"),
   function(self) self@types
 )
 
 
-#' @describeIn Type Length of the type.
 #' @export
-setMethod("length", signature(x = "Type"),
+setMethod("length", signature(x = "typesys::Type"),
   function(x) 1L
 )
 
 
-#' @describeIn CompositeType Length of the type.
 #' @export
-setMethod("length", signature(x = "CompositeType"),
+setMethod("length", signature(x = "typesys::CompositeType"),
   function(x) length(x@types)
 )
 

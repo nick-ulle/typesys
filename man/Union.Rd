@@ -3,7 +3,7 @@
 \docType{class}
 \name{Union}
 \alias{Union}
-\alias{Union-class}
+\alias{typesys::Union-class}
 \title{Union}
 \usage{
 Union(...)

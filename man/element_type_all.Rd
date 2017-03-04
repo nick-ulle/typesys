@@ -9,4 +9,3 @@ element_type_all(self)
 \description{
 For any type, return a list of the underlying element types.
 }
-

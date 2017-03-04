@@ -9,4 +9,3 @@ add_context(object, context)
 \description{
 Add Context to Type
 }
-

@@ -3,7 +3,7 @@
 \docType{class}
 \name{RecordType}
 \alias{RecordType}
-\alias{RecordType-class}
+\alias{typesys::RecordType-class}
 \title{Record Type}
 \usage{
 RecordType(types)
@@ -11,4 +11,3 @@ RecordType(types)
 \description{
 A container for heterogeneous types.
 }
-

@@ -9,4 +9,3 @@ same_type(x, y)
 \description{
 Test whether two types are the same, including any contained types.
 }
-

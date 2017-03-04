@@ -11,4 +11,3 @@ For an atomic type or a container type with homogeneous elements, return the
 underlying element type. For a continer type with heterogeneous elements,
 throw an error.
 }
-

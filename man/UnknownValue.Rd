@@ -10,4 +10,3 @@ UnknownValue()
 Basic unknown value class. Later this could be expanded to a reference
 system.
 }
-

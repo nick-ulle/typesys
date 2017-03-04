@@ -3,7 +3,7 @@
 \docType{class}
 \name{FunctionType}
 \alias{FunctionType}
-\alias{FunctionType-class}
+\alias{typesys::FunctionType-class}
 \title{Function Type}
 \usage{
 FunctionType(return_type, scope)
@@ -11,4 +11,3 @@ FunctionType(return_type, scope)
 \description{
 A function.
 }
-

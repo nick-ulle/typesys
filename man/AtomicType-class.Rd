@@ -7,4 +7,3 @@
 \description{
 A monomorphic scalar type.
 }
-

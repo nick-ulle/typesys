@@ -11,4 +11,3 @@ This R6 class represents a scope within a program. In particular, a scope
 can have a parent scope, a list of contained names, and a return value (to
 model functions).
 }
-
