@@ -37,14 +37,20 @@ setClass("typesys::Union", contains = "typesys::Type",
 #' @export
 setMethod("simplify", signature(x = "typesys::Union"),
   function(x) {
-    # FIXME: Remove extraneous types.
-    types = x@types
-    same_type = vapply(types[-1], identical, logical(1), types[[1]])
+    types = lapply(x@types, function(type) {
+      if (is(type, "typesys::Union"))
+        simplify(type)@types
+      else
+        type
+    })
+    types = as.list(unique(unlist(types)))
 
-    if (all(same_type))
+    if (length(types) == 1) {
       simplified = types[[1]]
-    else
+    } else {
+      x@types = types
       simplified = x
+    }
 
     return (simplified)
   }
