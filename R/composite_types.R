@@ -7,18 +7,18 @@
 NULL
 
 
-#' Record Type
+#' List Type
 #'
 #' A container for heterogeneous types.
 #'
 #' @export
-RecordType = function(types) {
-  new("typesys::RecordType", types = types)
+ListType = function(types) {
+  new("typesys::ListType", types = types)
 }
 
-#' @rdname RecordType
-#' @exportClass typesys::RecordType
-setClass("typesys::RecordType", contains = "typesys::CompositeType",
+#' @rdname ListType
+#' @exportClass typesys::ListType
+setClass("typesys::ListType", contains = "typesys::CompositeType",
   validity = function(object) {
     messages = character(0)
 
