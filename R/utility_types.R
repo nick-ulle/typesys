@@ -38,10 +38,14 @@ setClass("typesys::Union", contains = "typesys::Type",
 setMethod("simplify", signature(x = "typesys::Union"),
   function(x) {
     types = lapply(x@types, function(type) {
-      if (is(type, "typesys::Union"))
+      if (is(type, "typesys::Union")) {
         simplify(type)@types
-      else
+      } else if (is(type, "typesys::Type")) {
+        type@value = UnknownValue()
         type
+      } else {
+        type
+      }
     })
     types = as.list(unique(unlist(types)))
 
