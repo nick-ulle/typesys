@@ -4,21 +4,8 @@
 
 
 #' @include generics.R
+#' @include values.R
 NULL
-
-
-# NOTE: This base class is a workaround because R assumes empty base classes
-# are virtual.
-setClass("typesys::Value")
-
-#' Unknown Value
-#'
-#' Basic unknown value class. Later this could be expanded to a reference
-#' system.
-#'
-#' @export
-UnknownValue = function() new("typesys::UnknownValue")
-setClass("typesys::UnknownValue", contains = "typesys::Value")
 
 
 #' Type
@@ -91,7 +78,10 @@ setMethod("format", signature(x = "typesys::Type"),
     dim = dim(x)
     dim_msg =
       if (is.null(dim)) ""
-      else sprintf(" [%s]", paste0(dim, collapse = "x"))
+      else {
+        dim = vapply(dim, format, "")
+        sprintf(" [%s]", paste0(dim, collapse = " x "))
+      }
 
     contexts_msg = paste0(x@contexts, collapse = ", ")
 

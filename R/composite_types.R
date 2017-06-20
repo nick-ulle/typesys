@@ -38,9 +38,9 @@ setClass("typesys::ListType", contains = "typesys::CompositeType",
 #' matrices.
 #'
 #' @export
-ArrayType = function(type, dimension) {
+ArrayType = function(type, dimension = list(UnknownValue())) {
   new("typesys::ArrayType",
-    types = list(type), dimension = as.integer(dimension)
+    types = list(type), dimension = as.list(dimension)
   )
 }
 
@@ -48,7 +48,7 @@ ArrayType = function(type, dimension) {
 #' @exportClass typesys::ArrayType
 setClass("typesys::ArrayType", contains = "typesys::CompositeType",
   slots = list(
-    dimension = "integer"
+    dimension = "list"
   ),
   validity = function(object) {
     messages = character(0)
@@ -58,9 +58,6 @@ setClass("typesys::ArrayType", contains = "typesys::CompositeType",
 
     if (length(object@dimension) < 1)
       messages = c(messages, "dimension must have length >= 1.")
-
-    if (!is.na(object@dimension) && any(object@dimension < 0))
-      messages = c(messages, "dimension must be >= 0.")
 
     if (length(messages) > 0) messages
     else TRUE
@@ -86,7 +83,12 @@ setMethod("element_type<-", signature(self = "typesys::ArrayType"),
 
 #' @export
 setMethod("length", signature(x = "typesys::ArrayType"),
-  function(x) prod(x@dimension)
+  function(x) {
+    Reduce(function(a, b) {
+      if (is.numeric(b)) b * a
+      else NA
+    }, x@dimension)
+  }
 )
 
 

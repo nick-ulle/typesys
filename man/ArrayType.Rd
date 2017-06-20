@@ -6,7 +6,7 @@
 \alias{typesys::ArrayType-class}
 \title{Array Type}
 \usage{
-ArrayType(type, dimension)
+ArrayType(type, dimension = list(UnknownValue()))
 }
 \description{
 A dimensioned container for homogeneous types. This is a superclass for
