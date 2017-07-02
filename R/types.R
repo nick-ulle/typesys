@@ -85,7 +85,7 @@ setMethod("format", signature(x = "typesys::Type"),
 
     contexts_msg = paste0(x@contexts, collapse = ", ")
 
-    sprintf("%*s%s%s {%s}", indent, "", type_msg, dim_msg, contexts_msg)
+    sprintf("%*s%s%s", indent, "", type_msg, dim_msg, if(nchar(contexts_msg)) sprintf(" {%s}", contexts_msg) else "")
   }
 )
 
@@ -94,9 +94,9 @@ setMethod("format", signature(x = "typesys::Type"),
 setMethod("format", signature(x = "typesys::CompositeType"),
   function(x, indent = 0, ...) {
     types_msg = vapply(x@types, format, character(1), indent = indent + 2)
-    types_msg = paste0(types_msg, collapse = "\n")
+    types_msg = paste0(types_msg, collapse = "\n") #XXX probably , or at least indent.
 
-    sprintf("%s\n%s", callNextMethod(), types_msg)
+    sprintf("%s  < %s >", callNextMethod(), types_msg)
   }
 )
 
