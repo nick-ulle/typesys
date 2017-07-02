@@ -96,3 +96,12 @@ setMethod("length", signature(x = "typesys::ArrayType"),
 setMethod("dim", signature(x = "typesys::ArrayType"),
   function(x) x@dimension
 )
+
+
+
+setClass("typesys::SEXPType", contains = "typesys::CompositeType")
+SEXPType = function(...) new("typesys::SEXPType", ...)
+
+setClass("typesys::LISTSEXPType", contains = "typesys::SEXPType")
+LISTSEXPType = function(...) new("typesys::LISTSEXPType", ...)
+               
