@@ -21,6 +21,7 @@ Suggests:
     testthat
 RoxygenNote: 6.0.1
 Collate: 
+    'type_environment.R'
     'generics.R'
     'values.R'
     'types.R'
@@ -29,7 +30,6 @@ Collate:
     'methods.R'
     'scope.R'
     'substitution.R'
-    'type_environment.R'
     'typesys.R'
     'unify.R'
     'utility_types.R'

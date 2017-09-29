@@ -1,8 +1,10 @@
 #' @include types.R
+#' @include type_environment.R
 NULL
 
 .print = function(x, ...) cat(format(x, ...), "\n")
 
+.show = function(object) cat(format(object, indent = 0), "\n")
 
 #' @export
 format.Substitution = function(x, ...) {
@@ -18,11 +20,27 @@ format.Substitution = function(x, ...) {
 #' @export
 print.Substitution = .print
 
+#' @export
+setMethod("show", signature(object = "typesys::TypeEnvironment"), .show)
 
 #' @export
-setMethod("show", signature(object = "typesys::Type"),
-  function(object) cat(format(object, indent = 0), "\n")
+setMethod("format", signature(x = "typesys::TypeEnvironment"),
+  function(x, ...) {
+    x = x@env
+
+    if (length(x) == 0)
+      return("TypeEnvironment (0 elements)\n")
+
+    vals = vapply(x, format, "")
+    a = paste0(sprintf("%s: %s", names(x), vals), collapse = "\n")
+
+    sprintf("TypeEnvironment (%i elements)\n%s\n", length(x), a)
+  }
 )
+
+
+#' @export
+setMethod("show", signature(object = "typesys::Type"), .show)
 
 #' @export
 setMethod("format", signature(x = "typesys::TypeVar"),

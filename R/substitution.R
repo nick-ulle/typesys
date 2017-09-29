@@ -1,3 +1,6 @@
+#' @include types.R
+#' @include type_environment.R
+NULL
 
 #' @export
 Substitution = function(name, value) {
@@ -34,6 +37,19 @@ applySubstitution = function(exp, sub) {
 #'
 #' @export
 setGeneric("applySubstitution")
+
+
+#' @export
+`applySubstitution.typesys::TypeEnvironment` =
+function(exp, sub) {
+  exp@env = lapply(exp@env, applySubstitution, sub)
+  exp
+}
+
+#' @export
+setMethod("applySubstitution", "typesys::TypeEnvironment",
+  `applySubstitution.typesys::TypeEnvironment`)
+
 
 #' @export
 `applySubstitution.typesys::FunctionType` =
