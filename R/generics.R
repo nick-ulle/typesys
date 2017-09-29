@@ -9,7 +9,6 @@
 #' @export
 setGeneric("format")
 
-
 #' Simplify a Type
 #'
 #' This function collapses Unions of the same type.

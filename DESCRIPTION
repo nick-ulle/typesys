@@ -1,6 +1,6 @@
 Package: typesys
 Title: General-purpose Abstract Type System
-Version: 0.2.0.9002
+Version: 0.2.0.9003
 Date: 2017-02-22
 Authors@R: person("Nick", "Ulle",  role = c("aut", "cre"),
     email = "nick.ulle@gmail.com")
@@ -21,11 +21,15 @@ Suggests:
     testthat
 RoxygenNote: 6.0.1
 Collate: 
-    'scope.R'
     'generics.R'
     'values.R'
     'types.R'
-    'atomic_types.R'
-    'composite_types.R'
+    'format.R'
+    'instantiate.R'
+    'methods.R'
+    'scope.R'
+    'substitution.R'
+    'type_environment.R'
     'typesys.R'
+    'unify.R'
     'utility_types.R'

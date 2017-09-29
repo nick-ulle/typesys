@@ -28,18 +28,49 @@ setClass("typesys::Type", contains = "VIRTUAL",
   )
 )
 
-
-#' Atomic Type
-#'
-#' A monomorphic scalar type.
-#'
-#' @name AtomicType-class
-#' @exportClass typesys::AtomicType
-setClass("typesys::AtomicType", contains = c("typesys::Type", "VIRTUAL"))
-
-
 setClassUnion("typesys::list|Type", c("list", "typesys::Type"))
 
+#' Type Variable
+#'
+#' @export
+TypeVar = function(name, quantified = FALSE) {
+  new("typesys::TypeVar", name = name, quantified = quantified)
+}
+
+#' @rdname TypeVar
+#' @exportClass typesys::TypeVar
+setClass("typesys::TypeVar", contains = "typesys::Type",
+  slots = list(
+    name = "character",
+    quantified = "logical"
+  )
+)
+
+
+#' Function Type
+#'
+#' A function.
+#'
+#' @export
+FunctionType = function(args, returnVal) {
+  if (!is.list(args))
+    args = list(args)
+
+  new("typesys::FunctionType", args = args, returnVal = returnVal)
+}
+
+
+#' @rdname FunctionType
+#' @exportClass typesys::FunctionType
+setClass("typesys::FunctionType", contains = "typesys::Type",
+  slots = list(
+    args = "list",
+    returnVal = "typesys::Type"
+  )
+)
+
+
+# Composite Types ----------------------------------------
 
 #' Composite Type
 #'
@@ -56,126 +87,116 @@ setClass("typesys::CompositeType", contains = c("typesys::Type", "VIRTUAL"),
   )
 )
 
-
-# Methods
-# =======
-
-#' @export
-setMethod("show", signature(object = "typesys::Type"),
-  function(object) cat(format(object, indent = 0), "\n")
-)
-
-
-# Print out 
-#   RecordType ()
-#     IntegerType (index)
-
-#' @export
-setMethod("format", signature(x = "typesys::Type"),
-  function(x, indent = 0, ...) {
-    type_msg = class(x)[[1]]
-
-    dim = dim(x)
-    dim_msg =
-      if (is.null(dim)) ""
-      else {
-        dim = vapply(dim, format, "")
-        sprintf(" [%s]", paste0(dim, collapse = " x "))
-      }
-
-    contexts_msg = paste0(x@contexts, collapse = ", ")
-
-    sprintf("%*s%s%s {%s}", indent, "", type_msg, dim_msg, contexts_msg)
-  }
-)
-
-
-#' @export
-setMethod("format", signature(x = "typesys::CompositeType"),
-  function(x, indent = 0, ...) {
-    types_msg = vapply(x@types, format, character(1), indent = indent + 2)
-    types_msg = paste0(types_msg, collapse = "\n")
-
-    sprintf("%s\n%s", callNextMethod(), types_msg)
-  }
-)
-
-
-#' @export
-setMethod("same_type", signature(x = "typesys::Type"),
-  function(x, y) is(x, class(y))
-)
-
-
-#' @export
-setMethod("same_type", signature(x = "typesys::CompositeType"),
-  function(x, y) {
-    same_class = is(x, class(y))
-    if (!same_class)
-      return(FALSE)
-
-    types_x = element_type_all(x)
-    types_y = element_type_all(y)
-    if (length(types_x) != length(types_y))
-      return(FALSE)
-
-    all(mapply(same_type, types_x, types_y))
-  }
-)
-
-
-#' @export
-setMethod("element_type", signature(self = "typesys::Type"),
-  function(self) self
-)
-
-
-#' @export
-setMethod("element_type", signature(self = "typesys::CompositeType"),
-  function(self) stop("composite types may contain multiple element types.")
-)
-    
-
-#' @export
-setMethod("element_type_all", signature(self = "typesys::Type"),
-  function(self) list(self)
-)
-
-
-#' @export
-setMethod("element_type_all", signature(self = "typesys::CompositeType"),
-  function(self) self@types
-)
-
-
-#' @export
-setMethod("length", signature(x = "typesys::Type"),
-  function(x) 1L
-)
-
-
-#' @export
-setMethod("length", signature(x = "typesys::CompositeType"),
-  function(x) length(x@types)
-)
-
-
-# Functions
-# =========
-
-#' Add Context to Type
+#' List Type
+#'
+#' A container for heterogeneous types.
 #'
 #' @export
-add_context = function(object, context) {
-  object@contexts = c(object@contexts, context)
-  validObject(object)
-  return(object)
+ListType = function(types) {
+  new("typesys::ListType", types = types)
 }
 
+#' @rdname ListType
+#' @exportClass typesys::ListType
+setClass("typesys::ListType", contains = "typesys::CompositeType",
+  validity = function(object) {
+    messages = character(0)
 
-#' Check If Type Has Context
+    is_type = sapply(object@types, is, "typesys::Type")
+    if (!all(is_type))
+      messages = c(messages, "types must have superclass Type.")
+
+    if (length(messages) > 0) messages
+    else TRUE
+  }
+)
+
+
+#' Array Type
+#'
+#' A dimensioned container for homogeneous types. This is a superclass for
+#' matrices.
 #'
 #' @export
-has_context = function(object, context) {
-  context %in% object@contexts
+ArrayType = function(type, dimension = list(UnknownValue())) {
+  new("typesys::ArrayType",
+    types = list(type), dimension = as.list(dimension)
+  )
 }
+
+#' @rdname ArrayType
+#' @exportClass typesys::ArrayType
+setClass("typesys::ArrayType", contains = "typesys::CompositeType",
+  slots = list(
+    dimension = "list"
+  ),
+  validity = function(object) {
+    messages = character(0)
+
+    if (!is(object@types[[1]], "typesys::Type"))
+      messages = c(messages, "type must extend class typesys::Type.")
+
+    if (length(object@dimension) < 1)
+      messages = c(messages, "dimension must have length >= 1.")
+
+    if (length(messages) > 0) messages
+    else TRUE
+  }
+)
+
+
+
+# Atomic Types ----------------------------------------
+
+#' Atomic Type
+#'
+#' A monomorphic scalar type.
+#'
+#' @name AtomicType-class
+#' @exportClass typesys::AtomicType
+setClass("typesys::AtomicType", contains = c("typesys::Type", "VIRTUAL"))
+
+
+
+# Numeric Types
+# =============
+
+setClass("typesys::NumberType", contains = c("typesys::AtomicType", "VIRTUAL"))
+
+#' @export
+IntegerType = function(...) new("typesys::IntegerType", ...)
+setClass("typesys::IntegerType", contains = "typesys::NumberType")
+
+#' @export
+RealType = function(...) new("typesys::RealType", ...)
+setClass("typesys::RealType", contains = "typesys::NumberType")
+
+#' @export
+ComplexType = function(...) new("typesys::ComplexType", ...)
+setClass("typesys::ComplexType", contains = "typesys::NumberType")
+
+
+# String Types
+# ============
+
+setClass("typesys::TextType", contains = c("typesys::AtomicType", "VIRTUAL"))
+
+#' @export
+StringType = function(...) new("typesys::StringType", ...)
+setClass("typesys::StringType", contains = "typesys::TextType")
+
+#' @export
+CharacterType = function(...) new("typesys::CharacterType", ...)
+setClass("typesys::CharacterType", contains = "typesys::TextType")
+
+
+# Other Atomic Types
+# ==================
+
+#' @export
+NullType = function(...) new("typesys::NullType", ...)
+setClass("typesys::NullType", contains = "typesys::AtomicType")
+
+#' @export
+BooleanType = function(...) new("typesys::BooleanType", ...)
+setClass("typesys::BooleanType", contains = "typesys::AtomicType")
