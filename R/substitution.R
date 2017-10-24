@@ -40,15 +40,15 @@ setGeneric("applySubstitution")
 
 
 #' @export
-`applySubstitution.typesys::TypeEnvironment` =
+applySubstitution.TypeEnvironment =
 function(exp, sub) {
-  exp@env = lapply(exp@env, applySubstitution, sub)
+  exp$env = lapply(exp$env, applySubstitution, sub)
   exp
 }
 
 #' @export
-setMethod("applySubstitution", "typesys::TypeEnvironment",
-  `applySubstitution.typesys::TypeEnvironment`)
+#setMethod("applySubstitution", "typesys::TypeEnvironment",
+#  `applySubstitution.typesys::TypeEnvironment`)
 
 
 #' @export

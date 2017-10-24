@@ -21,22 +21,18 @@ format.Substitution = function(x, ...) {
 print.Substitution = .print
 
 #' @export
-setMethod("show", signature(object = "typesys::TypeEnvironment"), .show)
+format.TypeEnvironment = function(x, ...) {
+  if (length(x) == 0)
+    return("TypeEnvironment (0 elements)\n")
+
+  vals = vapply(x$env, format, "")
+  a = paste0(sprintf("%s: %s", names(x), vals), collapse = "\n")
+
+  sprintf("TypeEnvironment (%i elements)\n%s\n", length(x), a)
+}
 
 #' @export
-setMethod("format", signature(x = "typesys::TypeEnvironment"),
-  function(x, ...) {
-    x = x@env
-
-    if (length(x) == 0)
-      return("TypeEnvironment (0 elements)\n")
-
-    vals = vapply(x, format, "")
-    a = paste0(sprintf("%s: %s", names(x), vals), collapse = "\n")
-
-    sprintf("TypeEnvironment (%i elements)\n%s\n", length(x), a)
-  }
-)
+print.TypeEnvironment = .print
 
 
 #' @export
