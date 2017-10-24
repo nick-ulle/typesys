@@ -33,7 +33,7 @@ setMethod("unify",
       sub = unify(x@args[[i]], y@args[[i]], sub)
     }
     
-    unify(x@returnVal, y@returnVal, sub)
+    unify(x@return_type, y@return_type, sub)
   }
 )
 
@@ -95,6 +95,6 @@ setMethod("%in%",
   function(x, table) {
     args = vapply(table@args, `%in%`, NA, x)
 
-    any(args) || (x %in% table@returnVal)
+    any(args) || (x %in% table@return_type)
   }
 )

@@ -55,7 +55,7 @@ function(exp, sub) {
 `applySubstitution.typesys::FunctionType` =
 function(exp, sub) {
   exp@args = lapply(exp@args, applySubstitution, sub)
-  exp@returnVal = applySubstitution(exp@returnVal, sub)
+  exp@return_type = applySubstitution(exp@return_type, sub)
 
   exp
 }

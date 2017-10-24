@@ -52,11 +52,11 @@ setClass("typesys::TypeVar", contains = "typesys::Type",
 #' A function.
 #'
 #' @export
-FunctionType = function(args, returnVal) {
+FunctionType = function(args, return_type) {
   if (!is.list(args))
     args = list(args)
 
-  new("typesys::FunctionType", args = args, returnVal = returnVal)
+  new("typesys::FunctionType", args = args, return_type = return_type)
 }
 
 
@@ -65,7 +65,7 @@ FunctionType = function(args, returnVal) {
 setClass("typesys::FunctionType", contains = "typesys::Type",
   slots = list(
     args = "list",
-    returnVal = "typesys::Type"
+    return_type = "typesys::Type"
   )
 )
 

@@ -80,7 +80,7 @@ setMethod("format", signature(x = "typesys::FunctionType"),
     template =
       if (length(x@args) == 0) "(%s) → %s"
       else "%s → %s"
-    sprintf(template, args, format(x@returnVal))
+    sprintf(template, args, format(x@return_type))
   }
 )
 

@@ -6,7 +6,7 @@
 \alias{typesys::FunctionType-class}
 \title{Function Type}
 \usage{
-FunctionType(args, returnVal)
+FunctionType(args, return_type)
 }
 \description{
 A function.
