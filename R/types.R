@@ -20,10 +20,12 @@ NULL
 setClass("typesys::Type", contains = "VIRTUAL",
   slots = list(
     contexts = "character",
+    quantified = "character",
     value = "ANY"
   ),
   prototype = list(
     contexts = character(0),
+    quantified = character(0),
     value = UnknownValue()
   )
 )
@@ -33,16 +35,18 @@ setClassUnion("typesys::list|Type", c("list", "typesys::Type"))
 #' Type Variable
 #'
 #' @export
-TypeVar = function(name, quantified = FALSE) {
-  new("typesys::TypeVar", name = name, quantified = quantified)
+TypeVar = function(name, quantify = FALSE) {
+  if (quantify)
+    new("typesys::TypeVar", name = name, quantified = name)
+  else
+    new("typesys::TypeVar", name = name)
 }
 
 #' @rdname TypeVar
 #' @exportClass typesys::TypeVar
 setClass("typesys::TypeVar", contains = "typesys::Type",
   slots = list(
-    name = "character",
-    quantified = "logical"
+    name = "character"
   )
 )
 
@@ -56,7 +60,11 @@ FunctionType = function(args, return_type) {
   if (!is.list(args))
     args = list(args)
 
-  new("typesys::FunctionType", args = args, return_type = return_type)
+  quantified = lapply(args, function(a) a@quantified)
+  quantified = unique(unlist(quantified))
+
+  new("typesys::FunctionType", args = args, return_type = return_type,
+    quantified = quantified)
 }
 
 

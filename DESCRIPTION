@@ -26,7 +26,6 @@ Collate:
     'values.R'
     'types.R'
     'format.R'
-    'instantiate.R'
     'methods.R'
     'scope.R'
     'substitution.R'

@@ -36,30 +36,33 @@ print.TypeEnvironment = .print
 
 
 #' @export
-setMethod("show", signature(object = "typesys::Type"), .show)
-
-#' @export
 setMethod("format", signature(x = "typesys::TypeVar"),
-  function(x, indent = 0, ...) {
-    if (x@quantified)
-      sprintf("∀%s", x@name)
+  function(x, indent = 0, top = TRUE, ...) {
+    if (top)
+      paste0(format_quantified(x@quantified), x@name)
     else
       x@name
   }
 )
 
-# Print out 
-#   RecordType ()
-#     IntegerType (index)
-
 #' @export
-setMethod("format", signature(x = "typesys::Type"),
-  function(x, indent = 0, ...) {
-    tag = class(x)[[1]]
-    substr(tag, 10, nchar(tag) - 4)
+setMethod("format", signature(x = "typesys::FunctionType"),
+  function(x, indent = 0, top = TRUE, ...) {
+    args = vapply(x@args, format, "", top = FALSE)
+    args = paste(args, collapse = ", ")
+
+    template =
+      if (length(x@args) == 0) "(%s) → %s"
+      else "%s → %s"
+
+    str = sprintf(template, args, format(x@return_type, top = FALSE))
+
+    if (top)
+      paste0(format_quantified(x@quantified), str)
+    else
+      str
   }
 )
-
 
 #' @export
 setMethod("format", signature(x = "typesys::CompositeType"),
@@ -72,16 +75,18 @@ setMethod("format", signature(x = "typesys::CompositeType"),
 )
 
 #' @export
-setMethod("format", signature(x = "typesys::FunctionType"),
+setMethod("format", signature(x = "typesys::Type"),
   function(x, indent = 0, ...) {
-    args = vapply(x@args, format, "")
-    args = paste(args, collapse = ", ")
-
-    template =
-      if (length(x@args) == 0) "(%s) → %s"
-      else "%s → %s"
-    sprintf(template, args, format(x@return_type))
+    tag = class(x)[[1]]
+    substr(tag, 10, nchar(tag) - 4)
   }
 )
 
 
+#' @export
+setMethod("show", signature(object = "typesys::Type"), .show)
+
+
+format_quantified = function(quantified) {
+  paste("∀", quantified, ". ", sep = "", collapse = "")
+}

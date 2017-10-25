@@ -6,7 +6,7 @@
 \alias{typesys::TypeVar-class}
 \title{Type Variable}
 \usage{
-TypeVar(name, quantified = FALSE)
+TypeVar(name, quantify = FALSE)
 }
 \description{
 Type Variable
