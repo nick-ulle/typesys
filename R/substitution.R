@@ -3,14 +3,14 @@
 NULL
 
 #' @export
-Substitution = function(name, value) {
-  sub = structure(list(), class = "Substitution")
+Substitution = function(sub = list()) {
+  sub = as.list(sub)
 
-  if (!missing(name) && !missing(value)) {
-    sub[[name]] = value
-  }
+  unique_names = unique(names(sub))
+  if (length(unique_names) != length(sub))
+    stop("sub must be a list with unique element names.")
 
-  sub
+  structure(sub, class = "Substitution")
 }
 
 #' Compose Substitutions
@@ -47,8 +47,8 @@ function(exp, sub) {
 }
 
 #' @export
-#setMethod("applySubstitution", "typesys::TypeEnvironment",
-#  `applySubstitution.typesys::TypeEnvironment`)
+setMethod("applySubstitution", "TypeEnvironment",
+  `applySubstitution.TypeEnvironment`)
 
 
 #' @export

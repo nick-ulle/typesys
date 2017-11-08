@@ -7,11 +7,14 @@ TypeEnvironment = R6::R6Class("TypeEnvironment",
   "public" = list(
     parent = NULL,
     active = character(0),
+    bound_type_vars = character(0),
     env = list(),
 
-    initialize = function(name, value, parent = NULL) {
-      if (!missing(name) && !missing(value))
-        self$env[[name]] = value
+    initialize = function(..., parent = NULL) {
+      env = list(...)
+      # TODO: Allow some kind of formula shorthand for types.
+      #self$env = lapply(env, formula_to_type)
+      self$env = env
 
       self$parent = parent
     }
@@ -26,7 +29,9 @@ TypeEnvironment = R6::R6Class("TypeEnvironment",
 #' @export
 `[[<-.TypeEnvironment` = function(x, i, value) {
   #vars = collectVars(value)
-  #x$vars = union(x$vars, vars)
+  if (is(value, "typesys::TypeVar"))
+    x$bound_type_vars = union(x$bound_type_vars, value@name)
+
   x$env[[i]] = value
   x
 }

@@ -21,10 +21,11 @@ Suggests:
     testthat
 RoxygenNote: 6.0.1
 Collate: 
-    'type_environment.R'
     'generics.R'
     'values.R'
     'types.R'
+    'collect_type_vars.R'
+    'type_environment.R'
     'format.R'
     'methods.R'
     'scope.R'

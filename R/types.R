@@ -60,8 +60,12 @@ FunctionType = function(args, return_type) {
   if (!is.list(args))
     args = list(args)
 
-  quantified = lapply(args, function(a) a@quantified)
-  quantified = unique(unlist(quantified))
+  # FIXME: Test this constructor and make it less hacky.
+  if (length(args) > 0) {
+    quantified = lapply(args, function(a) a@quantified)
+    quantified = unique(unlist(quantified))
+  } else
+    quantified = character(0)
 
   new("typesys::FunctionType", args = args, return_type = return_type,
     quantified = quantified)

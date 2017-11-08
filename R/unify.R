@@ -50,14 +50,17 @@ setMethod("unify",
     if (x@name == y@name)
       sub
     else
-      compose(sub, Substitution(y@name, x))
+      compose(sub, Substitution(structure(list(x), names = y@name)))
   }
 )
 
 #' @export
 setMethod("unify",
   signature(x = "typesys::AtomicType", y = "typesys::TypeVar"),
-  function(x, y, sub) compose(sub, Substitution(y@name, x))
+  function(x, y, sub) {
+    sub2 = Substitution(structure(list(x), names = y@name))
+    compose(sub, sub2)
+  }
 )
 
 #' @export

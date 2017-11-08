@@ -88,5 +88,8 @@ setMethod("show", signature(object = "typesys::Type"), .show)
 
 
 format_quantified = function(quantified) {
-  paste("∀", quantified, ". ", sep = "", collapse = "")
+  if (length(quantified) == 0)
+    ""
+  else
+    sprintf("∀%s. ", paste(quantified, collapse = ", "))
 }
