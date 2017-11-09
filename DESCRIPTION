@@ -30,6 +30,7 @@ Collate:
     'methods.R'
     'scope.R'
     'substitution.R'
+    'type_formula.R'
     'typesys.R'
     'unify.R'
     'utility_types.R'
