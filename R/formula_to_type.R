@@ -12,22 +12,24 @@
 #'
 #' @export
 formula_to_type = function(x) {
-  args = expr_to_type(x[[2]])
-  return_type = expr_to_type(x[[3]])
+  UseMethod("formula_to_type")
+}
+
+
+#' @export
+formula_to_type.formula = function(x) {
+  args = formula_to_type(x[[2]])
+  return_type = formula_to_type(x[[3]])
+  if (!is(return_type, "typesys::Type"))
+    stop("Invalid return type.")
 
   FunctionType(args, return_type)
 }
 
 
-expr_to_type = function(expr) {
-  # NOTE: formula_to_type() could be the generic instead. Do we want to expose
-  # the expr_to_type() methods to users?
-  UseMethod("expr_to_type")
-}
-
 #' @export
-expr_to_type.name = function(expr) {
-  name = as.character(expr)
+formula_to_type.name = function(x) {
+  name = as.character(x)
   if (grepl("^[a-z]", name))
     return (TypeVar(name))
 
@@ -41,11 +43,16 @@ expr_to_type.name = function(expr) {
   )
 }
 
+
 #' @export
-expr_to_type.call = function(expr) {
-  name = as.character(expr[[1]])
+formula_to_type.call = function(x) {
+  name = as.character(x[[1]])
   if (name == "c")
-    lapply(expr[-1], expr_to_type)
+    lapply(x[-1], formula_to_type)
   else
     stop(sprintf("Unrecognized type constructor '%s'.", name))
 }
+
+
+#' @export
+`formula_to_type.typesys::Type` = function(x) x

@@ -4,7 +4,7 @@ context("formula_to_type")
 test_that("type variables", {
   name = "x"
 
-  result = expr_to_type(as.name(name))
+  result = formula_to_type(as.name(name))
 
   # -----
   expect_is(result, "typesys::TypeVar")
@@ -13,10 +13,10 @@ test_that("type variables", {
 
 
 test_that("type constants", {
-  result1 = expr_to_type(as.name("Boolean"))
-  result2 = expr_to_type(as.name("Integer"))
-  result3 = expr_to_type(as.name("Real"))
-  result4 = expr_to_type(as.name("Complex"))
+  result1 = formula_to_type(as.name("Boolean"))
+  result2 = formula_to_type(as.name("Integer"))
+  result3 = formula_to_type(as.name("Real"))
+  result4 = formula_to_type(as.name("Complex"))
 
   # -----
   expect_is(result1, "typesys::BooleanType")
@@ -37,4 +37,13 @@ test_that("functions", {
   expect_is(args[[2]], "typesys::BooleanType")
   expect_is(args[[3]], "typesys::TypeVar")
   expect_is(result@return_type, "typesys::IntegerType")
+})
+
+
+test_that("Types", {
+  type = IntegerType()
+  result = formula_to_type(type)
+
+  # -----
+  expect_identical(type, result)
 })
