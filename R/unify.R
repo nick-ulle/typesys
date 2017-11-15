@@ -65,6 +65,18 @@ setMethod("unify",
 
 #' @export
 setMethod("unify",
+  signature(x = "typesys::Join", y = "typesys::TypeVar"),
+  function(x, y, sub) {
+    x = compute(x)
+    if (is(x, "typesys::Join"))
+      callNextMethod()
+    else
+      unify(x, y, sub)
+  }
+)
+
+#' @export
+setMethod("unify",
   signature(x = "ANY", y = "typesys::TypeVar"),
   function(x, y, sub) {
     # Occurs check

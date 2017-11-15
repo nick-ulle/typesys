@@ -65,9 +65,18 @@ setMethod("format", signature(x = "typesys::FunctionType"),
 )
 
 #' @export
+setMethod("format", signature(x = "typesys::Join"),
+  function(x, indent = 0, ...) {
+    args = vapply(x@args, format, NA_character_)
+    args = paste0(args, collapse = ", ")
+    sprintf("Join(%s)", args)
+  }
+)
+
+#' @export
 setMethod("format", signature(x = "typesys::CompositeType"),
   function(x, indent = 0, ...) {
-    types_msg = vapply(x@types, format, character(1), indent = indent + 2)
+    types_msg = vapply(x@types, format, NA_character_, indent = indent + 2)
     types_msg = paste0(types_msg, collapse = "\n")
 
     sprintf("%s\n%s", callNextMethod(), types_msg)

@@ -25,6 +25,7 @@ Collate:
     'values.R'
     'types.R'
     'collect_type_vars.R'
+    'compute.R'
     'type_environment.R'
     'format.R'
     'formula_to_type.R'

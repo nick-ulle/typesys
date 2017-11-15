@@ -90,6 +90,27 @@ setClass("typesys::FunctionType", contains = "typesys::Type",
   )
 )
 
+# Special Types ----------------------------------------
+
+#' Join
+#'
+#' Take the join (least upper bound) of a list of types. This differs from a
+#' Union in that it always returns a named type.
+#'
+#' @export
+#'
+Join = function(...) {
+  new("typesys::Join", args = list(...))
+}
+
+#' @rdname Join
+#' @exportClass typesys::Join
+setClass("typesys::Join", contains = "typesys::Type",
+  slots = list(
+    args = "list"
+  )
+)
+
 
 # Composite Types ----------------------------------------
 

@@ -52,6 +52,14 @@ function(exp, sub) {
 })
 
 #' @export
+setMethod("applySubstitution", "typesys::Join",
+function(exp, sub) {
+  exp@args = lapply(exp@args, applySubstitution, sub)
+
+  exp
+})
+
+#' @export
 setMethod("applySubstitution", "typesys::TypeVar",
 function(exp, sub) {
   index = match(exp@name, names(sub))

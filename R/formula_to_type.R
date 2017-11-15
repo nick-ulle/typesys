@@ -49,6 +49,8 @@ formula_to_type.call = function(x) {
   name = as.character(x[[1]])
   if (name == "c")
     lapply(x[-1], formula_to_type)
+  else if (name == "Join")
+    do.call(Join, lapply(x[-1], formula_to_type))
   else
     stop(sprintf("Unrecognized type constructor '%s'.", name))
 }
