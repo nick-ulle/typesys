@@ -7,8 +7,8 @@
 #' @export
 setGeneric("unify",
   function(x, y, sub = Substitution()) {
-    x = applySubstitution(x, sub)
-    y = applySubstitution(y, sub)
+    x = do_substitution(x, sub)
+    y = do_substitution(y, sub)
 
     standardGeneric("unify")
 })

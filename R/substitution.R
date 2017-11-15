@@ -20,7 +20,7 @@ Substitution = function(sub = list()) {
 #' @export
 compose =
 function(sub1, sub2) {
-  x = structure(lapply(sub1, applySubstitution, sub2), class = "Substitution")
+  x = structure(lapply(sub1, do_substitution, sub2), class = "Substitution")
 
   new = setdiff(names(sub2), names(sub1))
   x[new] = sub2[new]
@@ -31,36 +31,36 @@ function(sub1, sub2) {
 #' Apply a Substitution
 #'
 #' @export
-setGeneric("applySubstitution",
-function(exp, sub) standardGeneric("applySubstitution")
+setGeneric("do_substitution",
+function(exp, sub) standardGeneric("do_substitution")
 )
 
 #' @export
-setMethod("applySubstitution", "TypeEnvironment",
+setMethod("do_substitution", "TypeEnvironment",
 function(exp, sub) {
-  exp$env = lapply(exp$env, applySubstitution, sub)
+  exp$env = lapply(exp$env, do_substitution, sub)
   exp
 })
 
 #' @export
-setMethod("applySubstitution", "typesys::FunctionType",
+setMethod("do_substitution", "typesys::FunctionType",
 function(exp, sub) {
-  exp@args = lapply(exp@args, applySubstitution, sub)
-  exp@return_type = applySubstitution(exp@return_type, sub)
-
-  exp
-})
-
-#' @export
-setMethod("applySubstitution", "typesys::Join",
-function(exp, sub) {
-  exp@args = lapply(exp@args, applySubstitution, sub)
+  exp@args = lapply(exp@args, do_substitution, sub)
+  exp@return_type = do_substitution(exp@return_type, sub)
 
   exp
 })
 
 #' @export
-setMethod("applySubstitution", "typesys::TypeVar",
+setMethod("do_substitution", "typesys::Join",
+function(exp, sub) {
+  exp@args = lapply(exp@args, do_substitution, sub)
+
+  exp
+})
+
+#' @export
+setMethod("do_substitution", "typesys::TypeVar",
 function(exp, sub) {
   index = match(exp@name, names(sub))
   if (is.na(index))
@@ -70,6 +70,6 @@ function(exp, sub) {
 })
 
 #' @export
-setMethod("applySubstitution", "typesys::AtomicType",
+setMethod("do_substitution", "typesys::AtomicType",
 function(exp, sub) exp
 )
