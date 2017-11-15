@@ -86,30 +86,3 @@ setMethod("unify",
     compose(sub, Substitution(y@name, x))
   }
 )
-
-
-
-#' @export
-setGeneric("%in%", valueClass = "logical")
-
-#' @export
-setMethod("%in%",
-  signature(x = "typesys::TypeVar", table = "typesys::AtomicType"),
-  function(x, table) FALSE
-)
-
-#' @export
-setMethod("%in%",
-  signature(x = "typesys::TypeVar", table = "typesys::TypeVar"),
-  function(x, table) x@name == table@name
-)
-
-#' @export
-setMethod("%in%",
-  signature(x = "typesys::TypeVar", table = "typesys::FunctionType"),
-  function(x, table) {
-    args = vapply(table@args, `%in%`, NA, x)
-
-    any(args) || (x %in% table@return_type)
-  }
-)

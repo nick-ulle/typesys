@@ -29,6 +29,7 @@ Collate:
     'type_environment.R'
     'format.R'
     'formula_to_type.R'
+    'in.R'
     'methods.R'
     'scope.R'
     'substitution.R'
