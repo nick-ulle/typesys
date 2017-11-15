@@ -56,10 +56,11 @@ setClass("typesys::TypeVar", contains = "typesys::Type",
 #' A function.
 #'
 #' @export
-FunctionType = function(args, return_type) {
-  if (!is.list(args))
-    args = list(args)
+FunctionType = function(args, return_type)
+  UseMethod("FunctionType")
 
+#' @export
+FunctionType.list = function(args, return_type) {
   # FIXME: Test this constructor and make it less hacky.
   if (length(args) > 0) {
     quantified = lapply(args, function(a) a@quantified)
@@ -70,6 +71,14 @@ FunctionType = function(args, return_type) {
   new("typesys::FunctionType", args = args, return_type = return_type,
     quantified = quantified)
 }
+
+#' @export
+FunctionType.TypeEnvironment = function(args, return_type)
+  FunctionType.list(args$env, return_type)
+
+#' @export
+FunctionType.default = function(args, return_type)
+  FunctionType.list(list(args), return_type)
 
 
 #' @rdname FunctionType

@@ -9,6 +9,7 @@
 TypeEnvironment
 }
 \description{
-Type Environment
+A type environment maps names to types. The idea is analagous to how an R
+environment maps names to values.
 }
 \keyword{datasets}

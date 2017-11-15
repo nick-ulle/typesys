@@ -28,61 +28,40 @@ function(sub1, sub2) {
   x
 }
 
-#' @export
-applySubstitution = function(exp, sub) {
-  UseMethod("applySubstitution")
-}
-
 #' Apply a Substitution
 #'
 #' @export
-setGeneric("applySubstitution")
-
-
-#' @export
-applySubstitution.TypeEnvironment =
-function(exp, sub) {
-  exp$env = lapply(exp$env, applySubstitution, sub)
-  exp
-}
+setGeneric("applySubstitution",
+function(exp, sub) standardGeneric("applySubstitution")
+)
 
 #' @export
 setMethod("applySubstitution", "TypeEnvironment",
-  `applySubstitution.TypeEnvironment`)
-
+function(exp, sub) {
+  exp$env = lapply(exp$env, applySubstitution, sub)
+  exp
+})
 
 #' @export
-`applySubstitution.typesys::FunctionType` =
+setMethod("applySubstitution", "typesys::FunctionType",
 function(exp, sub) {
   exp@args = lapply(exp@args, applySubstitution, sub)
   exp@return_type = applySubstitution(exp@return_type, sub)
 
   exp
-}
+})
 
 #' @export
-setMethod("applySubstitution", "typesys::FunctionType",
-  `applySubstitution.typesys::FunctionType`)
-
-
-#' @export
-`applySubstitution.typesys::TypeVar` =
+setMethod("applySubstitution", "typesys::TypeVar",
 function(exp, sub) {
   index = match(exp@name, names(sub))
   if (is.na(index))
     exp
   else
     sub[[index]]
-}
-
-#' @export
-setMethod("applySubstitution", "typesys::TypeVar",
-  `applySubstitution.typesys::TypeVar`)
-
-#' @export
-`applySubstitution.typesys::AtomicType` =
-function(exp, sub) exp
+})
 
 #' @export
 setMethod("applySubstitution", "typesys::AtomicType",
-  `applySubstitution.typesys::AtomicType`)
+function(exp, sub) exp
+)

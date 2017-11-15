@@ -1,13 +1,13 @@
-# Type Environments keep track of which type variables have been added.
-
 #' Type Environment
+#'
+#' A type environment maps names to types. The idea is analagous to how an R
+#' environment maps names to values.
 #'
 #' @export
 TypeEnvironment = R6::R6Class("TypeEnvironment",
   "public" = list(
     parent = NULL,
     active = character(0),
-    bound_type_vars = character(0),
     env = list(),
 
     initialize = function(..., parent = NULL) {
@@ -22,6 +22,15 @@ TypeEnvironment = R6::R6Class("TypeEnvironment",
   )
 )
 
+setOldClass("TypeEnvironment")
+
+#' @export
+`[.TypeEnvironment` = function(x, i) {
+  new_env = TypeEnvironment$new()
+  new_env$env = x$env[i]
+  new_env
+}
+
 #' @export
 `[[.TypeEnvironment` = function(x, i) {
   x$env[[i]]
@@ -29,10 +38,6 @@ TypeEnvironment = R6::R6Class("TypeEnvironment",
 
 #' @export
 `[[<-.TypeEnvironment` = function(x, i, value) {
-  #vars = collectVars(value)
-  if (is(value, "typesys::TypeVar"))
-    x$bound_type_vars = union(x$bound_type_vars, value@name)
-
   x$env[[i]] = value
   x
 }
