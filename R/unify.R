@@ -83,6 +83,6 @@ setMethod("unify",
     if (y %in% x)
       stop("Occurs check failed!")
 
-    compose(sub, Substitution(y@name, x))
+    compose(sub, Substitution(structure(list(x), names = y@name)))
   }
 )
