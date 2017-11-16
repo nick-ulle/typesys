@@ -31,6 +31,7 @@ Collate:
     'formula_to_type.R'
     'in.R'
     'methods.R'
+    'quantify.R'
     'scope.R'
     'simplify.R'
     'substitution.R'
