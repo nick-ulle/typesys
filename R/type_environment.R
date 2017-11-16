@@ -10,12 +10,12 @@ TypeEnvironment = R6::R6Class("TypeEnvironment",
     active = character(0),
     env = list(),
 
-    initialize = function(..., parent = NULL) {
+    initialize = function(..., quantify = FALSE, parent = NULL) {
       env = list(...)
       if (length(env) == 1 && is(env[[1]], "list"))
         env = env[[1]]
 
-      self$env = lapply(env, formula_to_type)
+      self$env = lapply(env, formula_to_type, quantify)
 
       self$parent = parent
     }

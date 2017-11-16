@@ -4,10 +4,12 @@
 \alias{formula_to_type}
 \title{Convert a Formula to a Type Expression}
 \usage{
-formula_to_type(x)
+formula_to_type(x, quantify = FALSE)
 }
 \arguments{
 \item{x}{(formula) The formula to convert to a type expression.}
+
+\item{quantify}{(logical) Quantify the type variables?}
 }
 \description{
 This function makes it possible to write type expressions concisely using a

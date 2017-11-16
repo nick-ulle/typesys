@@ -9,26 +9,33 @@
 #' variables must be written in lower case.
 #'
 #' @param x (formula) The formula to convert to a type expression.
+#' @param quantify (logical) Quantify the type variables?
 #'
 #' @export
-formula_to_type = function(x) {
-  UseMethod("formula_to_type")
+formula_to_type = function(x, quantify = FALSE) UseMethod("formula_to_type")
+
+
+#' @export
+formula_to_type.formula = function(x, quantify = FALSE) {
+  if (length(x) == 2) {
+    type = formula_to_type(x[[2]])
+
+  } else if (length(x) == 3) {
+    args = formula_to_type(x[[2]])
+    return_type = formula_to_type(x[[3]])
+    if (!is(return_type, "typesys::Type"))
+      stop("Invalid return type.")
+
+    type = FunctionType(args, return_type)
+  }
+
+  if (quantify) quantify(type)
+  else type
 }
 
 
 #' @export
-formula_to_type.formula = function(x) {
-  args = formula_to_type(x[[2]])
-  return_type = formula_to_type(x[[3]])
-  if (!is(return_type, "typesys::Type"))
-    stop("Invalid return type.")
-
-  FunctionType(args, return_type)
-}
-
-
-#' @export
-formula_to_type.name = function(x) {
+formula_to_type.name = function(x, quantify = FALSE) {
   name = as.character(x)
   if (grepl("^[a-z]", name))
     return (TypeVar(name))
@@ -45,7 +52,7 @@ formula_to_type.name = function(x) {
 
 
 #' @export
-formula_to_type.call = function(x) {
+formula_to_type.call = function(x, quantify = FALSE) {
   name = as.character(x[[1]])
   if (name == "c")
     lapply(x[-1], formula_to_type)
@@ -57,4 +64,4 @@ formula_to_type.call = function(x) {
 
 
 #' @export
-`formula_to_type.typesys::Type` = function(x) x
+`formula_to_type.typesys::Type` = function(x, quantify = FALSE) x
