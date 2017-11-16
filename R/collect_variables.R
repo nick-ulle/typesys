@@ -25,3 +25,9 @@ setMethod("collect_variables", "typesys::AtomicType",
 function(type) character(0)
 )
 
+#' @export
+setMethod("collect_variables", "typesys::Join",
+function(type) {
+  arg_types = lapply(type@args, collect_variables)
+  unlist(arg_types)
+})
