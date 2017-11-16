@@ -18,7 +18,7 @@ function(x, table) {
   # out of the inner loop early may be more efficient.
   in_table = vapply(x, function(x_i) {
     in_table = FALSE
-    for (type in table$env) {
+    for (type in table$objects) {
       in_table = in_table | (x_i %in% type)
       if (in_table) break
     }

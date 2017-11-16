@@ -25,7 +25,7 @@ format.TypeEnvironment = function(x, ...) {
   if (length(x) == 0)
     return("TypeEnvironment (0 elements)\n")
 
-  vals = vapply(x$env, format, "")
+  vals = vapply(x$objects, format, NA_character_)
   a = paste0(sprintf("%s: %s", names(x), vals), collapse = "\n")
 
   sprintf("TypeEnvironment (%i elements)\n%s\n", length(x), a)

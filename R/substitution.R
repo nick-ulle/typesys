@@ -38,7 +38,7 @@ function(exp, sub) standardGeneric("do_substitution")
 #' @export
 setMethod("do_substitution", "TypeEnvironment",
 function(exp, sub) {
-  exp$env = lapply(exp$env, do_substitution, sub)
+  exp$objects = lapply(exp$objects, do_substitution, sub)
   exp
 })
 

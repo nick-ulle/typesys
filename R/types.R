@@ -74,7 +74,7 @@ FunctionType.list = function(args, return_type) {
 
 #' @export
 FunctionType.TypeEnvironment = function(args, return_type)
-  FunctionType.list(args$env, return_type)
+  FunctionType.list(args$objects, return_type)
 
 #' @export
 FunctionType.default = function(args, return_type)

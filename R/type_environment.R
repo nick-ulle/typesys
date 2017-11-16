@@ -7,15 +7,18 @@
 TypeEnvironment = R6::R6Class("TypeEnvironment",
   "public" = list(
     parent = NULL,
+    objects = list(),
     active = character(0),
-    env = list(),
 
     initialize = function(..., quantify = FALSE, parent = NULL) {
-      env = list(...)
-      if (length(env) == 1 && is(env[[1]], "list"))
-        env = env[[1]]
+      objects = list(...)
+      if (length(objects) == 1 && is(objects[[1]], "list"))
+        objects = objects[[1]]
 
-      self$env = lapply(env, formula_to_type, quantify)
+      if (length(unique(names(objects))) != length(objects))
+        stop("Objects in a TypeEnvironment must have unique names.")
+
+      self$objects = lapply(objects, formula_to_type, quantify)
 
       self$parent = parent
     }
@@ -26,28 +29,26 @@ setOldClass("TypeEnvironment")
 
 #' @export
 `[.TypeEnvironment` = function(x, i) {
-  new_env = TypeEnvironment$new()
-  new_env$env = x$env[i]
-  new_env
+  TypeEnvironment$new(x$objects[i])
 }
 
 #' @export
 `[[.TypeEnvironment` = function(x, i) {
-  x$env[[i]]
+  x$objects[[i]]
 }
 
 #' @export
 `[[<-.TypeEnvironment` = function(x, i, value) {
-  x$env[[i]] = value
+  x$objects[[i]] = value
   x
 }
 
 #' @export
 length.TypeEnvironment = function(x) {
-  length(x$env)
+  length(x$objects)
 }
 
 #' @export
 names.TypeEnvironment = function(x) {
-  names(x$env)
+  names(x$objects)
 }
