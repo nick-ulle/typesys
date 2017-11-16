@@ -56,7 +56,7 @@ setMethod("do_substitution", "typesys::Join",
 function(exp, sub) {
   exp@args = lapply(exp@args, do_substitution, sub)
 
-  exp
+  simplify(exp)
 })
 
 #' @export

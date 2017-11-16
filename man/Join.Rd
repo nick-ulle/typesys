@@ -6,7 +6,7 @@
 \alias{typesys::Join-class}
 \title{Join}
 \usage{
-Join(...)
+Join(..., simplify = TRUE)
 }
 \description{
 Take the join (least upper bound) of a list of types. This differs from a

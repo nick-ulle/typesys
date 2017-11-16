@@ -98,9 +98,13 @@ setClass("typesys::FunctionType", contains = "typesys::Type",
 #' Union in that it always returns a named type.
 #'
 #' @export
-#'
-Join = function(...) {
-  new("typesys::Join", args = list(...))
+Join = function(..., simplify = TRUE) {
+  join = new("typesys::Join", args = list(...))
+
+  if (simplify)
+    simplify(join)
+  else
+    join
 }
 
 #' @rdname Join
@@ -110,7 +114,6 @@ setClass("typesys::Join", contains = "typesys::Type",
     args = "list"
   )
 )
-
 
 # Composite Types ----------------------------------------
 

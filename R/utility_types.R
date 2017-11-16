@@ -35,32 +35,6 @@ setClass("typesys::Union", contains = "typesys::Type",
 )
 
 #' @export
-setMethod("simplify", signature(x = "typesys::Union"),
-  function(x) {
-    types = lapply(x@types, function(type) {
-      if (is(type, "typesys::Union")) {
-        simplify(type)@types
-      } else if (is(type, "typesys::Type")) {
-        type@value = UnknownValue()
-        type
-      } else {
-        type
-      }
-    })
-    types = as.list(unique(unlist(types)))
-
-    if (length(types) == 1) {
-      simplified = types[[1]]
-    } else {
-      x@types = types
-      simplified = x
-    }
-
-    return (simplified)
-  }
-)
-
-#' @export
 setMethod("[[", signature(x = "typesys::Union"),
   function(x, i, ...) {
     return (x@types[[i]])

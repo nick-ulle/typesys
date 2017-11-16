@@ -32,6 +32,7 @@ Collate:
     'in.R'
     'methods.R'
     'scope.R'
+    'simplify.R'
     'substitution.R'
     'typesys.R'
     'unify.R'

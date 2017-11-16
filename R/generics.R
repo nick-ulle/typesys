@@ -9,16 +9,6 @@
 #' @export
 setGeneric("format")
 
-#' Simplify a Type
-#'
-#' This function collapses Unions of the same type.
-#'
-#' @export
-setGeneric("simplify",
-  function(x) standardGeneric("simplify")
-)
-
-
 #' Test Types for Equality
 #'
 #' Test whether two types are the same, including any contained types.
