@@ -5,6 +5,7 @@
 
 #' @include generics.R
 #' @include values.R
+#' @include type_environment.R
 NULL
 
 
@@ -69,7 +70,7 @@ FunctionType.list = function(args, return_type) {
     quantified = character(0)
 
   new("typesys::FunctionType", args = args, return_type = return_type,
-    quantified = quantified)
+    quantified = quantified, type_environment = NULL)
 }
 
 #' @export
@@ -80,13 +81,15 @@ FunctionType.TypeEnvironment = function(args, return_type)
 FunctionType.default = function(args, return_type)
   FunctionType.list(list(args), return_type)
 
+setClassUnion("NullableTypeEnvironment", c("NULL", "TypeEnvironment"))
 
 #' @rdname FunctionType
 #' @exportClass typesys::FunctionType
 setClass("typesys::FunctionType", contains = "typesys::Type",
   slots = list(
     args = "list",
-    return_type = "typesys::Type"
+    return_type = "typesys::Type",
+    type_environment = "NullableTypeEnvironment"
   )
 )
 

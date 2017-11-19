@@ -20,12 +20,12 @@ Suggests:
     testthat
 RoxygenNote: 6.0.1
 Collate: 
+    'type_environment.R'
     'generics.R'
     'values.R'
     'types.R'
     'collect_variables.R'
     'compute.R'
-    'type_environment.R'
     'format.R'
     'formula_to_type.R'
     'in.R'
