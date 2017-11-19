@@ -36,7 +36,7 @@ print.TypeEnvironment = .print
 
 
 #' @export
-setMethod("format", signature(x = "typesys::TypeVar"),
+setMethod("format", signature(x = "typesys::TypeVariable"),
   function(x, indent = 0, top = TRUE, ...) {
     if (top)
       paste0(format_quantified(x@quantified), x@name)

@@ -1,10 +1,5 @@
-# Description:
-#
-# Abstract base class definitions for types.
+# Class definitions for types that are not language-specific.
 
-
-#' @include generics.R
-#' @include values.R
 #' @include type_environment.R
 NULL
 
@@ -21,31 +16,28 @@ NULL
 setClass("typesys::Type", contains = "VIRTUAL",
   slots = list(
     contexts = "character",
-    quantified = "character",
-    value = "ANY"
+    quantified = "character"
   ),
   prototype = list(
     contexts = character(0),
-    quantified = character(0),
-    value = UnknownValue()
+    quantified = character(0)
   )
 )
 
-setClassUnion("typesys::list|Type", c("list", "typesys::Type"))
 
 #' Type Variable
 #'
 #' @export
-TypeVar = function(name, quantify = FALSE) {
+TypeVariable = function(name, quantify = FALSE) {
   if (quantify)
-    new("typesys::TypeVar", name = name, quantified = name)
+    new("typesys::TypeVariable", name = name, quantified = name)
   else
-    new("typesys::TypeVar", name = name)
+    new("typesys::TypeVariable", name = name)
 }
 
-#' @rdname TypeVar
-#' @exportClass typesys::TypeVar
-setClass("typesys::TypeVar", contains = "typesys::Type",
+#' @rdname TypeVariable
+#' @exportClass typesys::TypeVariable
+setClass("typesys::TypeVariable", contains = "typesys::Type",
   slots = list(
     name = "character"
   )
@@ -193,7 +185,6 @@ setClass("typesys::ArrayType", contains = "typesys::CompositeType",
 )
 
 
-
 # Atomic Types ----------------------------------------
 
 #' Atomic Type
@@ -203,48 +194,3 @@ setClass("typesys::ArrayType", contains = "typesys::CompositeType",
 #' @name AtomicType-class
 #' @exportClass typesys::AtomicType
 setClass("typesys::AtomicType", contains = c("typesys::Type", "VIRTUAL"))
-
-
-
-# Numeric Types
-# =============
-
-setClass("typesys::NumberType", contains = c("typesys::AtomicType", "VIRTUAL"))
-
-#' @export
-IntegerType = function(...) new("typesys::IntegerType", ...)
-setClass("typesys::IntegerType", contains = "typesys::NumberType")
-
-#' @export
-RealType = function(...) new("typesys::RealType", ...)
-setClass("typesys::RealType", contains = "typesys::NumberType")
-
-#' @export
-ComplexType = function(...) new("typesys::ComplexType", ...)
-setClass("typesys::ComplexType", contains = "typesys::NumberType")
-
-
-# String Types
-# ============
-
-setClass("typesys::TextType", contains = c("typesys::AtomicType", "VIRTUAL"))
-
-#' @export
-StringType = function(...) new("typesys::StringType", ...)
-setClass("typesys::StringType", contains = "typesys::TextType")
-
-#' @export
-CharacterType = function(...) new("typesys::CharacterType", ...)
-setClass("typesys::CharacterType", contains = "typesys::TextType")
-
-
-# Other Atomic Types
-# ==================
-
-#' @export
-NullType = function(...) new("typesys::NullType", ...)
-setClass("typesys::NullType", contains = "typesys::AtomicType")
-
-#' @export
-BooleanType = function(...) new("typesys::BooleanType", ...)
-setClass("typesys::BooleanType", contains = "typesys::AtomicType")

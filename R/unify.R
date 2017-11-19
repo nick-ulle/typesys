@@ -39,13 +39,13 @@ setMethod("unify",
 
 #' @export
 setMethod("unify",
-  signature(x = "typesys::TypeVar", y = "ANY"),
+  signature(x = "typesys::TypeVariable", y = "ANY"),
   function(x, y, sub) unify(y, x, sub)
 )
 
 #' @export
 setMethod("unify",
-  signature(x = "typesys::TypeVar", y = "typesys::TypeVar"),
+  signature(x = "typesys::TypeVariable", y = "typesys::TypeVariable"),
   function(x, y, sub) {
     if (x@name == y@name)
       sub
@@ -56,7 +56,7 @@ setMethod("unify",
 
 #' @export
 setMethod("unify",
-  signature(x = "typesys::AtomicType", y = "typesys::TypeVar"),
+  signature(x = "typesys::AtomicType", y = "typesys::TypeVariable"),
   function(x, y, sub) {
     sub2 = Substitution(structure(list(x), names = y@name))
     compose(sub, sub2)
@@ -65,7 +65,7 @@ setMethod("unify",
 
 #' @export
 setMethod("unify",
-  signature(x = "typesys::Join", y = "typesys::TypeVar"),
+  signature(x = "typesys::Join", y = "typesys::TypeVariable"),
   function(x, y, sub) {
     x = compute(x)
     if (is(x, "typesys::Join"))
@@ -77,7 +77,7 @@ setMethod("unify",
 
 #' @export
 setMethod("unify",
-  signature(x = "ANY", y = "typesys::TypeVar"),
+  signature(x = "ANY", y = "typesys::TypeVariable"),
   function(x, y, sub) {
     # Occurs check
     if (y %in% x)

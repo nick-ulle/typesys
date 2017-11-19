@@ -16,7 +16,7 @@ function(type) {
 })
 
 #' @export
-setMethod("collect_variables", "typesys::TypeVar",
+setMethod("collect_variables", "typesys::TypeVariable",
 function(type) type@name
 )
 

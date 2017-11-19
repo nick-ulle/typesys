@@ -38,15 +38,24 @@ formula_to_type.formula = function(x, quantify = FALSE) {
 formula_to_type.name = function(x, quantify = FALSE) {
   name = as.character(x)
   if (grepl("^[a-z]", name))
-    return (TypeVar(name))
+    return (TypeVariable(name))
 
   # Check if this is a literal type.
-  switch(name,
-    "Complex" = ComplexType(),
-    "Real"    = RealType(),
-    "Integer" = IntegerType(),
-    "Boolean" = BooleanType(),
-    stop(sprintf("Unrecognized type '%s'.", name))
+  switch(name
+    , "Null"        = NullType()
+    , "Environment" = EnvironmentType()
+    # Use Char to avoid mixups with R's "character" type.
+    , "Char"        = CharacterType()
+    , "Logical"     = LogicalType()
+    , "Integer"     = IntegerType()
+    , "Numeric"     = NumericType()
+    , "Complex"     = ComplexType()
+    , "String"      = StringType()
+    , "ExternalPtr" = ExternalPtrType()
+    , "Raw"         = RawType()
+    , "Character"   =
+      stop("Unrecognized type 'Character'. Did you mean 'String'?")
+    , stop(sprintf("Unrecognized type '%s'.", name))
   )
 }
 

@@ -1,6 +1,6 @@
 Package: typesys
 Title: General-purpose Abstract Type System
-Version: 0.2.0.9005
+Version: 0.2.0.9006
 Authors@R: person("Nick", "Ulle",  role = c("aut", "cre"),
     email = "nick.ulle@gmail.com")
 Description: This package provides an abstraction of common data types, so that
@@ -21,19 +21,19 @@ Suggests:
 RoxygenNote: 6.0.1
 Collate: 
     'type_environment.R'
-    'generics.R'
-    'values.R'
     'types.R'
     'collect_variables.R'
     'compute.R'
     'format.R'
     'formula_to_type.R'
+    'generics.R'
     'in.R'
     'methods.R'
     'quantify.R'
-    'scope.R'
+    'r_types.R'
     'simplify.R'
     'substitution.R'
     'typesys.R'
     'unify.R'
-    'utility_types.R'
+    'union_type.R'
+    'values.R'

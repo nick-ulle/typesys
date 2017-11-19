@@ -12,18 +12,19 @@ test_that("Literals are unaffected", {
 
 
 test_that("Variables are quantified", {
-  texp = TypeVar("a")
+  texp = TypeVariable("a")
 
   result = quantify(texp)
 
   # -----
-  expect_is(result, "typesys::TypeVar")
+  expect_is(result, "typesys::TypeVariable")
   expect_equal(result@quantified, "a")
 })
 
 
 test_that("Variables in functions are quantified", {
-  texp = FunctionType(list(TypeVar("a"), TypeVar("b")), TypeVar("a"))
+  texp = FunctionType(list(TypeVariable("a"), TypeVariable("b")),
+    TypeVariable("a"))
 
   result = quantify(texp)
 

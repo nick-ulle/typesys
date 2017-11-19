@@ -60,7 +60,7 @@ function(exp, sub) {
 })
 
 #' @export
-setMethod("do_substitution", "typesys::TypeVar",
+setMethod("do_substitution", "typesys::TypeVariable",
 function(exp, sub) {
   index = match(exp@name, names(sub))
   if (is.na(index))

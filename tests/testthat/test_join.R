@@ -3,17 +3,17 @@ context("join")
 
 test_that("Join on 1 type is just that type", {
   join1 = Join(IntegerType())
-  join2 = Join(TypeVar("a"))
+  join2 = Join(TypeVariable("a"))
 
   # -----
   expect_is(join1, "typesys::IntegerType")
-  expect_is(join2, "typesys::TypeVar")
+  expect_is(join2, "typesys::TypeVariable")
 })
 
 
 test_that("Redundant types are removed", {
-  join1 = Join(BooleanType(), TypeVar("a"), BooleanType())
-  join2 = Join(TypeVar("a"), TypeVar("b"), TypeVar("a"))
+  join1 = Join(LogicalType(), TypeVariable("a"), LogicalType())
+  join2 = Join(TypeVariable("a"), TypeVariable("b"), TypeVariable("a"))
 
   # -----
   expect_equal(length(join1@args), 2)
@@ -26,8 +26,8 @@ test_that("Redundant types are removed", {
 
 
 test_that("Nested joins are flattened", {
-  join = Join(IntegerType(), RealType())
-  join@args[[1]] = Join(IntegerType(), RealType())
+  join = Join(IntegerType(), NumericType())
+  join@args[[1]] = Join(IntegerType(), NumericType())
 
   join = simplify(join)
 
@@ -36,5 +36,5 @@ test_that("Nested joins are flattened", {
 
   classes = vapply(join@args, function(arg) class(arg)[1], NA_character_)
   classes = sort(classes)
-  expect_equal(classes, c("typesys::IntegerType", "typesys::RealType"))
+  expect_equal(classes, c("typesys::IntegerType", "typesys::NumericType"))
 })

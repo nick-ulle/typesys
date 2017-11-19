@@ -6,7 +6,7 @@ setGeneric("%in%", valueClass = "logical")
 
 #' @export
 setMethod("%in%",
-  signature(x = "typesys::TypeVar", table = "ANY"),
+  signature(x = "typesys::TypeVariable", table = "ANY"),
 function(x, table) x@name %in% table
 )
 
@@ -37,7 +37,7 @@ function(x, table) rep(FALSE, length(x))
 
 #' @export
 setMethod("%in%",
-  signature(x = "character", table = "typesys::TypeVar"),
+  signature(x = "character", table = "typesys::TypeVariable"),
 function(x, table) x == table@name
 )
 
@@ -54,7 +54,7 @@ function(x, table) {
 
 #' @export
 setMethod("%in%",
-  signature(x = "typesys::TypeVar", table = "typesys::Join"),
+  signature(x = "typesys::TypeVariable", table = "typesys::Join"),
 function(x, table) {
   in_table = rep(FALSE, length(x))
   for (arg in table@args)
