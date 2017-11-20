@@ -14,34 +14,34 @@ setGeneric("unify",
 })
 
 
+# This function emits an error for incompatible types.
+unification_error = function(x, y, sub) {
+  msg = sprintf("Cannot unify types '%s' and '%s'.", format(x), format(y))
+  stop(msg, call. = FALSE)
+}
+
+
+# Atomic Types ----------------------------------------
+
 #' @export
 setMethod("unify",
   signature(x = "typesys::AtomicType", y = "typesys::AtomicType"),
   function(x, y, sub) {
-    if (!is(y, class(x)[[1]]))
-      stop("Cannot unify.")
-    
-    list()
+    if (class(x)[1] == class(y)[1])
+      sub
+    else
+      unification_error(x, y)
   }
 )
 
 #' @export
-setMethod("unify",
-  signature(x = "typesys::FunctionType", y = "typesys::FunctionType"),
-  function(x, y, sub) {
-    for (i in seq_along(x@args)) {
-      sub = unify(x@args[[i]], y@args[[i]], sub)
-    }
-    
-    unify(x@return_type, y@return_type, sub)
-  }
-)
+setMethod("unify", c(x = "typesys::AtomicType", y = "ANY"), unification_error)
 
 #' @export
-setMethod("unify",
-  signature(x = "typesys::TypeVariable", y = "ANY"),
-  function(x, y, sub) unify(y, x, sub)
-)
+setMethod("unify", c(x = "ANY", y = "typesys::AtomicType"), unification_error)
+
+
+# Type Variables ----------------------------------------
 
 #' @export
 setMethod("unify",
@@ -50,17 +50,15 @@ setMethod("unify",
     if (x@name == y@name)
       sub
     else
-      compose(sub, Substitution(structure(list(x), names = y@name)))
+      compose(sub, Substitution(setNames(list(x), y@name)))
   }
 )
 
 #' @export
 setMethod("unify",
-  signature(x = "typesys::AtomicType", y = "typesys::TypeVariable"),
-  function(x, y, sub) {
-    sub2 = Substitution(structure(list(x), names = y@name))
-    compose(sub, sub2)
-  }
+  signature(x = "typesys::TypeVariable", y = "ANY"),
+  # Swap order if type variable is on the left-hand side only.
+  function(x, y, sub) unify(y, x, sub)
 )
 
 #' @export
@@ -79,10 +77,25 @@ setMethod("unify",
 setMethod("unify",
   signature(x = "ANY", y = "typesys::TypeVariable"),
   function(x, y, sub) {
-    # Occurs check
-    if (y %in% x)
-      stop("Occurs check failed!")
+    if (y %in% x) {
+      unification_error(x, y)
+    }
 
-    compose(sub, Substitution(structure(list(x), names = y@name)))
+    compose(sub, Substitution(setNames(list(x), y@name)))
+  }
+)
+
+
+# Composite Types ----------------------------------------
+
+#' @export
+setMethod("unify",
+  signature(x = "typesys::FunctionType", y = "typesys::FunctionType"),
+  function(x, y, sub) {
+    for (i in seq_along(x@args)) {
+      sub = unify(x@args[[i]], y@args[[i]], sub)
+    }
+    
+    unify(x@return_type, y@return_type, sub)
   }
 )
