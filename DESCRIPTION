@@ -17,9 +17,11 @@ Imports:
     methods,
     R6
 Suggests:
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 RoxygenNote: 6.0.1
-Collate: 
+Collate:
     'type_environment.R'
     'types.R'
     'collect_variables.R'
@@ -37,3 +39,4 @@ Collate:
     'unify.R'
     'union_type.R'
     'values.R'
+VignetteBuilder: knitr

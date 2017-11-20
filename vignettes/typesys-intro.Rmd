@@ -1,0 +1,140 @@
+---
+title: "Introduction to typesys"
+author: "Nick Ulle"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to typesys}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE}
+library(typesys)
+```
+
+The __typesys__ package formalizes R's type system into a simple language.
+
+The most basic expressions in the type language are constant types, such as
+`Integer` and `Logical`. Unlike R's `typeof()` function, we distinguish between
+scalars and vectors. Constant types always describe scalar values. For example,
+`Integer` is a scalar integer. Generally, the names of the constant types match
+the names returned by `typeof()` up to capitalization. There are two
+exceptions:
+
+1. An R "double" corresponds to the `Numeric` type.
+1. An R "character" corresponds to the `String` type.
+
+The names `Numeric` and `String` were chosen because they give clearer
+descriptions of the values that are actually in their respective types.
+
+If we want to create a new `Integer` type, we can write
+```{r}
+IntegerType()
+```
+The output of this function is an S4 class that represents an `Integer`.
+Similar constructor functions exist for every other constant type.
+
+The type language also includes type variables, which are named placeholders
+for unknown types. The constructor for type variables requires a name to be
+specififed. To create a type variable called `a`, we can write
+```{r}
+TypeVariable("a")
+```
+Type variables serve two purposes. First, some functions have parameters where
+more than one type is allowed. For instance, the identity function
+```{r, results = "hide"}
+function(x) x
+```
+accepts an argument of any type. These functions are called polymorphic
+functions. Type variables are necessary to express the type of a polymorphic
+function. This is discussed in more detail below. Second, type variables are
+useful in any application where types may not be unknown. Type inference is an
+example application.
+
+<!--
+Vectors have certain properties, such as length, regardless of what the type of
+the individual elements is. Because of this, vectors are a parameterized type
+`Vector(a)` in the type language. The parameter `a` is the element type. If we
+want to create a new integer vector type, we can write
+```{r}
+#VectorType(IntegerType())
+```
+Similarly, to create a new character vector type, we can write
+```{r}
+#VectorType(StringType())
+```
+
+Functions are another parameterized type. They have the form $a \to b$ for
+arguments $a$ (a list of types) and return type $b$.
+-->
+
+
+## The Formula-based Type Language
+
+Constructing expressions in the type language using the type constructor
+functions is more verbose than is really necessary. __typesys__ provides a way
+to write type expressions concisely using R's formula notation. The rules are:
+
+*   A formula with both sides is converted to a function.
+*   A formula with right-hand side only is converted to the type described on
+    the right-hand side.
+*   The suffix "Type" is omitted from type constructors.
+*   Constant types are constructed without parentheses.
+*   Type variables are implicitly constructed from lowercase names (constant
+    types always use title case).
+*   Tuple and record types are constructed with `c()`, similar to R's syntax.
+
+Thus we can express the type $(a, b) \to Integer$ in formula notation as
+```{r}
+exp = c(a, b) ~ Integer
+formula_to_type(exp)
+```
+Here the function `formula_to_type()` converts the formula to a type. The type
+variables can optionally be quantified by setting the function's `quantify`
+parameter.
+
+
+## Unification & Substitution
+
+__typesys__ also includes an implementation Robinson's unification algorithm in
+the `unify()` function. Given two algebraic expressions, unification attempts
+to find a substitution of variables that makes the two expressions equal.
+
+For example, suppose we have types $a \to Integer$ and $Numeric \to Integer$
+and expect that they are equal. Then we can unify these types to see that they
+are equal under the substitution $a \mapsto Numeric$. We would
+write this as
+```{r}
+x = formula_to_type(a ~ Integer)
+y = formula_to_type(Numeric ~ Integer)
+unify(x, y)
+```
+
+The function emits an error when two types cannot be unified because they are
+incompatible.
+```{r, error = TRUE}
+x = formula_to_type(a ~ Integer)
+y = formula_to_type(~ Numeric)
+unify(x, y)
+```
+
+Successful unification returns a substitution of variables. Substitutions can
+be applied to existing types to with the `do_substitution()` function. For
+instance, by unifying the type variable `a` and an integer gives the
+substitution $a \mapsto Integer$. We can then apply the substitution to any
+expression that contains `a` to replace `a` with `Integer`. The code for this
+is
+```{r}
+x = TypeVariable("a")
+y = IntegerType()
+sub = unify(x, y)
+
+do_substitution(x, sub)
+```
+
+Finally, note that the `unify()` function is an inefficient prototype. In the
+worst case, it requires exponential time in the number of subexpressions being
+unified. Better algorithms for unification are known, with the best running in
+linear time. In the future, the `unify()` function may be changed to use a
+better algorithm.
