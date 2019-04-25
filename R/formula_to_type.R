@@ -44,7 +44,8 @@ formula_to_type.name = function(x, quantify = FALSE) {
   switch(name
     , "Null"        = NullType()
     , "Environment" = EnvironmentType()
-    # Use Char to avoid mixups with R's "character" type.
+    # Use "Char" instead of "Character" for the scalar string type, to avoid
+    # mixups with R's "character" vectors (which are "String" here).
     , "Char"        = CharacterType()
     , "Logical"     = LogicalType()
     , "Integer"     = IntegerType()
@@ -63,12 +64,13 @@ formula_to_type.name = function(x, quantify = FALSE) {
 #' @export
 formula_to_type.call = function(x, quantify = FALSE) {
   name = as.character(x[[1]])
-  if (name == "c")
-    lapply(x[-1], formula_to_type)
-  else if (name == "Join")
-    do.call(Join, lapply(x[-1], formula_to_type))
-  else
-    stop(sprintf("Unrecognized type constructor '%s'.", name))
+  switch(name
+    , "c"      = lapply(x[-1], formula_to_type)
+    , "Join"   = do.call(Join, lapply(x[-1], formula_to_type))
+    , "Array"  = ArrayType(formula_to_type(x[[2]]))
+    , "Vector" = VectorType(formula_to_type(x[[2]]))
+    , stop(sprintf("Unrecognized type constructor '%s'.", name))
+  )
 }
 
 

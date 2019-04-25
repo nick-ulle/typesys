@@ -47,39 +47,43 @@ setMethod("format", signature(x = "typesys::TypeVariable"),
 
 #' @export
 setMethod("format", signature(x = "typesys::FunctionType"),
-  function(x, indent = 0, top = TRUE, ...) {
-    args = vapply(x@args, format, "", top = FALSE)
-    args = paste(args, collapse = ", ")
+function(x, indent = 0, top = TRUE, ...) {
+  str = sprintf("%s → %s", format(x@args, top = FALSE),
+    format(x@return_type, top = FALSE))
 
-    template =
-      if (length(x@args) == 0) "(%s) → %s"
-      else "%s → %s"
-
-    str = sprintf(template, args, format(x@return_type, top = FALSE))
-
-    if (top)
-      paste0(format_quantified(x@quantified), str)
-    else
-      str
-  }
-)
+  if (top)
+    paste0(format_quantified(x@quantified), str)
+  else
+    str
+})
 
 #' @export
-setMethod("format", signature(x = "typesys::Join"),
-  function(x, indent = 0, ...) {
-    args = vapply(x@args, format, NA_character_)
-    args = paste0(args, collapse = ", ")
-    sprintf("Join(%s)", args)
-  }
-)
+setMethod("format", "typesys::RecordType",
+function(x, indent = 0, top = TRUE, ...) {
+  fields = vapply(x@fields, format, NA_character_, top = FALSE)
+  fields = sprintf("%s: %s", names(x@fields), fields)
+  fields = paste(fields, collapse = ", ")
+
+  str = sprintf("(%s)", fields)
+
+  if (top)
+    paste0(format_quantified(x@quantified), str)
+  else
+    str
+})
 
 #' @export
-setMethod("format", signature(x = "typesys::CompositeType"),
-  function(x, indent = 0, ...) {
-    types_msg = vapply(x@types, format, NA_character_, indent = indent + 2)
-    types_msg = paste0(types_msg, collapse = "\n")
+setMethod("format", "typesys::Join",
+function(x, indent = 0, ...) {
+  args = vapply(x@args, format, NA_character_)
+  args = paste0(args, collapse = ", ")
+  sprintf("Join(%s)", args)
+})
 
-    sprintf("%s\n%s", callNextMethod(), types_msg)
+#' @export
+setMethod("format", signature(x = "typesys::ArrayType"),
+  function(x, indent = 0, ...) {
+    sprintf("%s(%s)", callNextMethod(), format(x@type))
   }
 )
 

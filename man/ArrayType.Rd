@@ -6,9 +6,8 @@
 \alias{typesys::ArrayType-class}
 \title{Array Type}
 \usage{
-ArrayType(type, dimension = list(UnknownValue()))
+ArrayType(type, dimension = list())
 }
 \description{
-A dimensioned container for homogeneous types. This is a superclass for
-matrices.
+A dimensioned container for homogeneous types.
 }

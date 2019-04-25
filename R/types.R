@@ -49,29 +49,15 @@ setClass("typesys::TypeVariable", contains = "typesys::Type",
 #' A function.
 #'
 #' @export
-FunctionType = function(args, return_type)
-  UseMethod("FunctionType")
+FunctionType = function(args, return_type) {
+  if (!is(args, "typesys::ParameterType"))
+    args = ParameterType(args)
 
-#' @export
-FunctionType.list = function(args, return_type) {
-  # FIXME: Test this constructor and make it less hacky.
-  if (length(args) > 0) {
-    quantified = lapply(args, function(a) a@quantified)
-    quantified = unique(unlist(quantified))
-  } else
-    quantified = character(0)
+  quantified = union(args@quantified, return_type@quantified)
 
   new("typesys::FunctionType", args = args, return_type = return_type,
     quantified = quantified, type_environment = NULL)
 }
-
-#' @export
-FunctionType.TypeEnvironment = function(args, return_type)
-  FunctionType.list(args$objects, return_type)
-
-#' @export
-FunctionType.default = function(args, return_type)
-  FunctionType.list(list(args), return_type)
 
 setClassUnion("NullableTypeEnvironment", c("NULL", "TypeEnvironment"))
 
@@ -79,7 +65,7 @@ setClassUnion("NullableTypeEnvironment", c("NULL", "TypeEnvironment"))
 #' @exportClass typesys::FunctionType
 setClass("typesys::FunctionType", contains = "typesys::Type",
   slots = list(
-    args = "list",
+    args = "typesys::ParameterType",
     return_type = "typesys::Type",
     type_environment = "NullableTypeEnvironment"
   )
@@ -121,67 +107,87 @@ setClass("typesys::Join", contains = "typesys::Type",
 #'
 #' @name CompositeType-class
 #' @exportClass typesys::CompositeType
-setClass("typesys::CompositeType", contains = c("typesys::Type", "VIRTUAL"),
-  slots = list(
-    types = "list"
-  )
-)
-
-#' List Type
-#'
-#' A container for heterogeneous types.
-#'
-#' @export
-ListType = function(types) {
-  new("typesys::ListType", types = types)
-}
-
-#' @rdname ListType
-#' @exportClass typesys::ListType
-setClass("typesys::ListType", contains = "typesys::CompositeType",
-  validity = function(object) {
-    messages = character(0)
-
-    is_type = sapply(object@types, is, "typesys::Type")
-    if (!all(is_type))
-      messages = c(messages, "types must have superclass Type.")
-
-    if (length(messages) > 0) messages
-    else TRUE
-  }
-)
-
+setClass("typesys::CompositeType", contains = c("typesys::Type", "VIRTUAL"))
 
 #' Array Type
 #'
-#' A dimensioned container for homogeneous types. This is a superclass for
-#' matrices.
+#' A dimensioned container for homogeneous types.
 #'
 #' @export
-ArrayType = function(type, dimension = list(UnknownValue())) {
-  new("typesys::ArrayType",
-    types = list(type), dimension = as.list(dimension)
-  )
+ArrayType = function(type, dimension = list()) {
+  new("typesys::ArrayType", type = type, dimension = as.list(dimension))
 }
 
 #' @rdname ArrayType
 #' @exportClass typesys::ArrayType
 setClass("typesys::ArrayType", contains = "typesys::CompositeType",
   slots = list(
+    type = "typesys::Type",
     dimension = "list"
-  ),
-  validity = function(object) {
-    messages = character(0)
+  )
+)
 
-    if (!is(object@types[[1]], "typesys::Type"))
-      messages = c(messages, "type must extend class typesys::Type.")
+#' Vector Type
+#'
+#' A dimensioned container for homogeneous types. Unlike \code{ArrayType}, this
+#' class represents a container that can grow dynamically.
+#'
+#' @export
+VectorType = function(type, dimension = list()) {
+  new("typesys::VectorType", type = type, dimension = as.list(dimension))
+}
 
-    if (length(object@dimension) < 1)
-      messages = c(messages, "dimension must have length >= 1.")
+#' @rdname VectorType
+#' @exportClass typesys::VectorType
+setClass("typesys::VectorType", contains = "typesys::ArrayType")
 
-    if (length(messages) > 0) messages
-    else TRUE
+
+#' Record Type
+#'
+#' A container for heterogeneous types.
+#'
+#' @export
+RecordType = function(...) {
+  new("typesys::RecordType", fields = list(...))
+}
+
+#' @rdname RecordType
+#' @exportClass typesys::RecordType
+setClass("typesys::RecordType", contains = "typesys::CompositeType",
+  slots = list(
+    fields = "list"
+  )
+)
+
+
+#' Parameter Type
+#'
+#' A list of parameters for a function.
+#'
+#' @export
+ParameterType = function(...) {
+  # Check if ... is a list or TypeEnvironment.
+  fields = list(...)
+  if (length(fields) == 1 && is(fields[[1]], "TypeEnvironment"))
+    fields = fields[[1]]$objects
+
+  # Check quantification.
+  if (length(fields) == 0) {
+    quantified = character(0)
+  } else {
+    quantified = lapply(fields, function(a) a@quantified)
+    quantified = unique(unlist(quantified))
   }
+
+  new("typesys::ParameterType", fields = fields, quantified = quantified)
+}
+
+#' @rdname ParameterType
+#' @exportClass typesys::ParameterType
+setClass("typesys::ParameterType", contains = "typesys::RecordType",
+  slots = list(
+    optional = "logical"
+  )
 )
 
 

@@ -92,10 +92,76 @@ setMethod("unify",
 setMethod("unify",
   signature(x = "typesys::FunctionType", y = "typesys::FunctionType"),
   function(x, y, sub) {
+    # FIXME: Check that both have the same arity.
     for (i in seq_along(x@args)) {
+      # NOTE: Here is where unification run-time is exponential. If pairs of
+      # terms are repeated, we repeat the unification.
       sub = unify(x@args[[i]], y@args[[i]], sub)
     }
     
     unify(x@return_type, y@return_type, sub)
   }
 )
+
+#' @export
+setMethod("unify", c(x = "typesys::RecordType", y = "typesys::RecordType"),
+  function(x, y, sub) {
+    # Require them to have the same fields, but not necessarily the same order.
+    names_x = names(x@fields)
+    names_y = names(y@fields)
+    if (length(names_x) != length(names_y) || sort(names_x) != sort(names_y))
+      unification_error(x, y)
+
+    for (name in names_x)
+      sub = unify(x@fields[[name]], y@fields[[name]], sub)
+
+    sub
+  }
+)
+
+#' @export
+setMethod("unify",
+  c(x = "typesys::ParameterType", y = "typesys::ParameterType"),
+function(x, y, sub) {
+  fields_x = x@fields
+  fields_y = y@fields
+
+  # Match parameters by name.
+  names_xy = intersect(names(fields_x), names(fields_y))
+  names_xy = names_xy[names_xy != ""]
+  if (length(names_xy) > 0) {
+    idx_x = match(names_xy, names(fields_x))
+    idx_y = match(names_xy, names(fields_y))
+
+    for (i in seq_along(names_xy)) {
+      i_x = idx_x[i]
+      i_y = idx_y[i]
+      sub = unify(fields_x[[i_x]], fields_y[[i_y]], sub)
+    }
+
+    fields_x = fields_x[-idx_x]
+    fields_y = fields_y[-idx_y]
+  }
+
+  # Check extra parameters are optional.
+  if (length(fields_x) > length(fields_y)) {
+    len = length(fields_y)
+    fields_x = head(fields_x, len)
+    extra = tail(fields_x, -len)
+  } else {
+    len = length(fields_x)
+    fields_y = head(fields_y, len)
+    extra = tail(fields_y, -len)
+  }
+
+  # TODO:
+
+  # Match remaining parameters by position.
+  if (!all(names(fields_x) == "" | names(fields_y) == ""))
+    unification_error(x, y)
+
+  for (i in seq_along(fields_x))
+    sub = unify(fields_x[[i]], fields_y[[i]], sub)
+
+  sub
+})

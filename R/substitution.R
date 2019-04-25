@@ -52,6 +52,14 @@ function(exp, sub) {
 })
 
 #' @export
+setMethod("do_substitution", "typesys::RecordType",
+function(exp, sub) {
+  exp@fields = lapply(exp@fields, do_substitution, sub)
+
+  exp
+})
+
+#' @export
 setMethod("do_substitution", "typesys::Join",
 function(exp, sub) {
   exp@args = lapply(exp@args, do_substitution, sub)
