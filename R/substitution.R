@@ -1,83 +1,89 @@
 #' @include types.R
-#' @include type_environment.R
 NULL
 
 #' @export
-Substitution = function(sub = list()) {
-  sub = as.list(sub)
+setClass("typesys::Substitution", contains = "function",
+  slots = list(
+    map = "list"
+  ))
+setValidity("typesys::Substitution", function(object) {
+  map = object@map
 
-  unique_names = unique(names(sub))
-  if (length(unique_names) != length(sub))
-    stop("sub must be a list with unique element names.")
+  if ( any(duplicated(names(map))) )
+    return("elements must have unique names")
 
-  structure(sub, class = "Substitution")
-}
+  if ( all(vapply(map, is, NA, "typesys::Term")) )
+    TRUE
+  else
+    sprintf("elements must be Term objects")
+  })
 
-#' Compose Substitutions
-#' 
-#' This function applies the second substitution to the first.
-#'
 #' @export
-compose =
-function(sub1, sub2) {
-  x = structure(lapply(sub1, do_substitution, sub2), class = "Substitution")
+Substitution = function(...) {
+  sub = list(...)
+  len = length(sub)
 
-  new = setdiff(names(sub2), names(sub1))
-  x[new] = sub2[new]
+  # Allow passing a list.
+  if ( (len == 1) && is.list(sub[[1]]) ) {
+    sub = sub[[1]]
+  }
 
-  x
+  new("typesys::Substitution", map = sub,
+    # Here sys.function() gets this S4 object.
+    function(term) do_substitution(term, sys.function())
+  )
 }
+
 
 #' Apply a Substitution
 #'
+#' This generic function applies a Substitution to a Term or to another
+#' Substitution (composition).
+#'
+#' Substitutions are callable, and this is the generic they call. For clarity,
+#' calling a Substitution directly on a term is preferable to calling this
+#' function.
+#' 
+#' @param term A Term or Substitution object.
+#' @param sub A Substitution object to apply.
+#' @return An object of the same class as \code{term}.
+#'
 #' @export
 setGeneric("do_substitution",
-function(exp, sub) standardGeneric("do_substitution")
+  function(term, sub) standardGeneric("do_substitution")
 )
 
 #' @export
-setMethod("do_substitution", "TypeEnvironment",
-function(exp, sub) {
-  exp$objects = lapply(exp$objects, do_substitution, sub)
-  exp
-})
-
-#' @export
-setMethod("do_substitution", "typesys::FunctionType",
-function(exp, sub) {
-  exp@args = lapply(exp@args, do_substitution, sub)
-  exp@return_type = do_substitution(exp@return_type, sub)
-
-  exp
-})
-
-#' @export
-setMethod("do_substitution", "typesys::RecordType",
-function(exp, sub) {
-  exp@fields = lapply(exp@fields, do_substitution, sub)
-
-  exp
-})
-
-#' @export
-setMethod("do_substitution", "typesys::Join",
-function(exp, sub) {
-  exp@args = lapply(exp@args, do_substitution, sub)
-
-  simplify(exp)
-})
-
-#' @export
-setMethod("do_substitution", "typesys::TypeVariable",
-function(exp, sub) {
-  index = match(exp@name, names(sub))
-  if (is.na(index))
-    exp
+setMethod("do_substitution", signature("typesys::Variable"),
+function(term, sub) {
+  ans = sub[[term]]
+  if (is.null(ans))
+    term
   else
-    sub[[index]]
+    ans
 })
 
 #' @export
-setMethod("do_substitution", "typesys::AtomicType",
-function(exp, sub) exp
-)
+setMethod("do_substitution", signature("typesys::Constant"),
+  function(term, sub) term)
+
+#' @export
+setMethod("do_substitution", signature("typesys::Composite"),
+  function(term, sub) {
+    term@components = lapply(term@components, sub)
+    term
+  })
+
+#' @export
+setMethod("do_substitution", signature("typesys::Substitution"),
+  function(term, sub) {
+    # Term is also a substitution, so this is composition.
+    # Apply substitution to each element.
+    term@map = lapply(term@map, sub)
+
+    # Add entries not already present.
+    new_entries = setdiff(names(sub), names(term))
+    term[new_entries] = sub[new_entries]
+
+    term
+  })
