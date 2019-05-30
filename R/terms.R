@@ -28,6 +28,12 @@ setClass("typesys::Composite", contains = "typesys::Term",
   slots = list(
     components = "list"
   ))
+setValidity("typesys::Composite", function(object) {
+  if ( all(vapply(object@components, is, NA,"typesys::Term")) )
+    TRUE
+  else
+    "components must subclass typesys::Term"
+})
 
 
 #' @exportClass typesys::Constant
