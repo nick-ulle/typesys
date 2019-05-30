@@ -8,8 +8,11 @@ setClass("typesys::Substitution", contains = "function",
   ))
 setValidity("typesys::Substitution", function(object) {
   map = object@map
+  if (length(map) == 0)
+    return (TRUE)
 
-  if ( any(duplicated(names(map))) )
+  names = names(map)
+  if ( is.null(names) || any(duplicated(names)) )
     return("elements must have unique names")
 
   if ( all(vapply(map, is, NA, "typesys::Term")) )
@@ -32,6 +35,12 @@ Substitution = function(...) {
     # Here sys.function() gets this S4 object.
     function(term) do_substitution(term, sys.function())
   )
+}
+
+# TODO: Consider making this part of the Substitution() constructor.
+make_substitution = function(var, term) {
+  sub = structure(list(term), names = names(var))
+  Substitution(sub)
 }
 
 
