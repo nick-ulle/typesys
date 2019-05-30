@@ -7,7 +7,7 @@ test_that("type variables", {
   result = formula_to_type(as.name(name))
 
   # -----
-  expect_is(result, "typesys::TypeVariable")
+  expect_is(result, "typesys::Variable")
   expect_equal(result@name, name)
 })
 
@@ -30,18 +30,18 @@ test_that("functions", {
   result = formula_to_type(c(a, Logical, b) ~ Integer)
 
   # -----
-  expect_is(result, "typesys::FunctionType")
-  args = result@args
+  expect_is(result, "typesys::Function")
+  args = args(result)
   expect_equal(length(args), 3)
-  expect_is(args[[1]], "typesys::TypeVariable")
+  expect_is(args[[1]], "typesys::Variable")
   expect_is(args[[2]], "typesys::LogicalType")
-  expect_is(args[[3]], "typesys::TypeVariable")
-  expect_is(result@return_type, "typesys::IntegerType")
+  expect_is(args[[3]], "typesys::Variable")
+  expect_is(return_type(result), "typesys::IntegerType")
 })
 
 
 test_that("Types", {
-  type = IntegerType()
+  type = IntegerType
   result = formula_to_type(type)
 
   # -----
