@@ -36,7 +36,6 @@ Collate:
     'names.R'
     'quantify.R'
     'r_types.R'
-    'simplify.R'
     'typesys.R'
     'unify.R'
     'utilities.R'
