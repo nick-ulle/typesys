@@ -4,9 +4,8 @@
 #' formula-based language.
 #'
 #' Literal types have the same names and capitalization as their S4 classes,
-#' but with \code{typesys::} and \code{Type} excluded. So
-#' \code{typesys::IntegerType} is just written as \code{Integer}. Type
-#' variables must be written in lower case.
+#' but with \code{typesys::} excluded. So \code{typesys::RInteger} is just
+#' written as \code{RInteger}. Type variables must be written in lower case.
 #'
 #' @param x (formula) The formula to convert to a type expression.
 #' @param quantify (logical) Quantify the type variables?
@@ -42,20 +41,20 @@ formula_to_type.name = function(x, quantify = FALSE) {
 
   # Check if this is a literal type.
   switch(name
-    , "Null"        = NullType
-    , "Environment" = EnvironmentType
+    , "RNull"        = RNull
+    , "REnvironment" = REnvironment
     # Use "Char" instead of "Character" for the scalar string type, to avoid
     # mixups with R's "character" vectors (which are "String" here).
-    , "Char"        = CharacterType
-    , "Logical"     = LogicalType
-    , "Integer"     = IntegerType
-    , "Numeric"     = NumericType
-    , "Complex"     = ComplexType
-    , "String"      = StringType
-    , "ExternalPtr" = ExternalPtrType
-    , "Raw"         = RawType
-    , "Character"   =
-      stop("Unrecognized type 'Character'. Did you mean 'String'?")
+    , "RChar"        = RChar
+    , "RLogical"     = RLogical
+    , "RInteger"     = RInteger
+    , "RNumeric"     = RNumeric
+    , "RComplex"     = RComplex
+    , "RString"      = RString
+    , "RExternalPtr" = RExternalPtr
+    , "RRaw"         = RRaw
+    , "RCharacter"   =
+      stop("Unrecognized type 'RCharacter'. Did you mean 'RString'?")
     , stop(sprintf("Unrecognized type '%s'.", name))
   )
 }

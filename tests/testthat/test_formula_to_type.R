@@ -13,35 +13,35 @@ test_that("type variables", {
 
 
 test_that("type constants", {
-  result1 = formula_to_type(as.name("Logical"))
-  result2 = formula_to_type(as.name("Integer"))
-  result3 = formula_to_type(as.name("Numeric"))
-  result4 = formula_to_type(as.name("Complex"))
+  result1 = formula_to_type(as.name("RLogical"))
+  result2 = formula_to_type(as.name("RInteger"))
+  result3 = formula_to_type(as.name("RNumeric"))
+  result4 = formula_to_type(as.name("RComplex"))
 
   # -----
-  expect_is(result1, "typesys::LogicalType")
-  expect_is(result2, "typesys::IntegerType")
-  expect_is(result3, "typesys::NumericType")
-  expect_is(result4, "typesys::ComplexType")
+  expect_is(result1, "typesys::RLogical")
+  expect_is(result2, "typesys::RInteger")
+  expect_is(result3, "typesys::RNumeric")
+  expect_is(result4, "typesys::RComplex")
 })
 
 
 test_that("functions", {
-  result = formula_to_type(c(a, Logical, b) ~ Integer)
+  result = formula_to_type(c(a, RLogical, b) ~ RInteger)
 
   # -----
   expect_is(result, "typesys::Function")
   args = args(result)
   expect_equal(length(args), 3)
   expect_is(args[[1]], "typesys::Variable")
-  expect_is(args[[2]], "typesys::LogicalType")
+  expect_is(args[[2]], "typesys::RLogical")
   expect_is(args[[3]], "typesys::Variable")
-  expect_is(return_type(result), "typesys::IntegerType")
+  expect_is(return_type(result), "typesys::RInteger")
 })
 
 
 test_that("Types", {
-  type = IntegerType
+  type = RInteger
   result = formula_to_type(type)
 
   # -----

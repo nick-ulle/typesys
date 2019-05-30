@@ -1,50 +1,50 @@
 #' @include types.R
 NULL
 
-setClass("typesys::NullType", contains = "typesys::Constant")
-setClass("typesys::EnvironmentType", contains = "typesys::Constant")
-# Single character (like C "character" type):
-setClass("typesys::CharacterType", contains = "typesys::Constant")
+setClass("typesys::RNull", contains = "typesys::Constant")
+setClass("typesys::REnvironment", contains = "typesys::Constant")
+# Single character (like C "char" type):
+setClass("typesys::RChar", contains = "typesys::Constant")
 # Multiple characters (like scalar R "character" type):
-setClass("typesys::StringType", contains = "typesys::Constant")
-setClass("typesys::LogicalType", contains = "typesys::Constant")
-setClass("typesys::IntegerType", contains = "typesys::Constant")
+setClass("typesys::RString", contains = "typesys::Constant")
+setClass("typesys::RLogical", contains = "typesys::Constant")
+setClass("typesys::RInteger", contains = "typesys::Constant")
 # Double-precision floating point:
-setClass("typesys::NumericType", contains = "typesys::Constant")
-setClass("typesys::ComplexType", contains = "typesys::Constant")
+setClass("typesys::RNumeric", contains = "typesys::Constant")
+setClass("typesys::RComplex", contains = "typesys::Constant")
 # TODO: list
-setClass("typesys::ExternalPtrType", contains = "typesys::Constant")
-setClass("typesys::RawType", contains = "typesys::Constant")
+setClass("typesys::RExternalPtr", contains = "typesys::Constant")
+setClass("typesys::RRaw", contains = "typesys::Constant")
 
 #' @export
-NullType = new("typesys::NullType")
+RNull = new("typesys::RNull")
 
 #' @export
-EnvironmentType = new("typesys::EnvironmentType")
+REnvironment = new("typesys::REnvironment")
 
 #' @export
-CharacterType = new("typesys::CharacterType")
+RChar = new("typesys::RChar")
 
 #' @export
-LogicalType = new("typesys::LogicalType")
+RLogical = new("typesys::RLogical")
 
 #' @export
-IntegerType = new("typesys::IntegerType")
+RInteger = new("typesys::RInteger")
 
 #' @export
-NumericType = new("typesys::NumericType")
+RNumeric = new("typesys::RNumeric")
 
 #' @export
-ComplexType = new("typesys::ComplexType")
+RComplex = new("typesys::RComplex")
 
 #' @export
-StringType = new("typesys::StringType")
+RString = new("typesys::RString")
 
 #' @export
-ExternalPtrType = new("typesys::ExternalPtrType")
+RExternalPtr = new("typesys::RExternalPtr")
 
 #' @export
-RawType = new("typesys::RawType")
+RRaw = new("typesys::RRaw")
 
 # Low Priority ----------------------------------------
 # S4: an S4 object which is not a simple object
