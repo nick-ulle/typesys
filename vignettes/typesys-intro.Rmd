@@ -16,30 +16,30 @@ library(typesys)
 The __typesys__ package formalizes R's type system into a simple language.
 
 The most basic expressions in the type language are constant types, such as
-`Integer` and `Logical`. Unlike R's `typeof()` function, we distinguish between
-scalars and vectors. Constant types always describe scalar values. For example,
-`Integer` is a scalar integer. Generally, the names of the constant types match
-the names returned by `typeof()` up to capitalization. There are two
-exceptions:
+`RInteger` and `RLogical`. Unlike R's `typeof()` function, we distinguish
+between scalars and vectors. Constant types always describe scalar values. For
+example, `RInteger` is a scalar integer. Generally, the names of the constant
+types match the names returned by `typeof()` up to capitalization. There are
+two exceptions:
 
-1. An R "double" corresponds to the `Numeric` type.
-1. An R "character" corresponds to the `String` type.
+1. An R "double" corresponds to the `RNumeric` type.
+1. An R "character" corresponds to the `RString` type.
 
-The names `Numeric` and `String` were chosen because they give clearer
+The names `RNumeric` and `RString` were chosen because they give clearer
 descriptions of the values that are actually in their respective types.
 
-If we want to create a new `Integer` type, we can write
+If we want to create a new `RInteger` type, we can write
 ```{r}
-IntegerType()
+RInteger
 ```
-The output of this function is an S4 class that represents an `Integer`.
+The output of this function is an S4 class that represents an `RInteger`.
 Similar constructor functions exist for every other constant type.
 
 The type language also includes type variables, which are named placeholders
 for unknown types. The constructor for type variables requires a name to be
 specififed. To create a type variable called `a`, we can write
 ```{r}
-TypeVariable("a")
+Variable("a")
 ```
 Type variables serve two purposes. First, some functions have parameters where
 more than one type is allowed. For instance, the identity function
@@ -85,9 +85,9 @@ to write type expressions concisely using R's formula notation. The rules are:
     types always use title case).
 *   Tuple and record types are constructed with `c()`, similar to R's syntax.
 
-Thus we can express the type $(a, b) \to Integer$ in formula notation as
+Thus we can express the type $(a, b) \to RInteger$ in formula notation as
 ```{r}
-exp = c(a, b) ~ Integer
+exp = c(a, b) ~ RInteger
 formula_to_type(exp)
 ```
 Here the function `formula_to_type()` converts the formula to a type. The type
@@ -101,36 +101,34 @@ __typesys__ also includes an implementation Robinson's unification algorithm in
 the `unify()` function. Given two algebraic expressions, unification attempts
 to find a substitution of variables that makes the two expressions equal.
 
-For example, suppose we have types $a \to Integer$ and $Numeric \to Integer$
+For example, suppose we have types $a \to RInteger$ and $RNumeric \to RInteger$
 and expect that they are equal. Then we can unify these types to see that they
-are equal under the substitution $a \mapsto Numeric$. We would
+are equal under the substitution $a \mapsto RNumeric$. We would
 write this as
 ```{r}
-x = formula_to_type(a ~ Integer)
-y = formula_to_type(Numeric ~ Integer)
+x = formula_to_type(a ~ RInteger)
+y = formula_to_type(RNumeric ~ RInteger)
 unify(x, y)
 ```
 
 The function emits an error when two types cannot be unified because they are
 incompatible.
 ```{r, error = TRUE}
-x = formula_to_type(a ~ Integer)
-y = formula_to_type(~ Numeric)
+x = formula_to_type(a ~ RInteger)
+y = formula_to_type(~ RNumeric)
 unify(x, y)
 ```
 
 Successful unification returns a substitution of variables. Substitutions can
-be applied to existing types to with the `do_substitution()` function. For
-instance, by unifying the type variable `a` and an integer gives the
-substitution $a \mapsto Integer$. We can then apply the substitution to any
-expression that contains `a` to replace `a` with `Integer`. The code for this
-is
+be applied to existing terms by calling them on the term. For instance, by
+unifying the type variable `a` and an integer gives the substitution $a \mapsto
+RInteger$. We can then apply the substitution to any expression that contains
+`a` to replace `a` with `RInteger`. The code for this is:
 ```{r}
-x = TypeVariable("a")
-y = IntegerType()
+x = Variable("a")
+y = RInteger
 sub = unify(x, y)
-
-do_substitution(x, sub)
+sub(x)
 ```
 
 Finally, note that the `unify()` function is an inefficient prototype. In the
