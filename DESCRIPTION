@@ -24,7 +24,7 @@ RoxygenNote: 6.1.0
 Collate:
     'terms.R'
     'compare.R'
-    'constraint.R'
+    'constraints.R'
     'substitution.R'
     'extract.R'
     'type_environment.R'
