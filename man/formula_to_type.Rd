@@ -17,7 +17,6 @@ formula-based language.
 }
 \details{
 Literal types have the same names and capitalization as their S4 classes,
-but with \code{typesys::} and \code{Type} excluded. So
-\code{typesys::IntegerType} is just written as \code{Integer}. Type
-variables must be written in lower case.
+but with \code{typesys::} excluded. So \code{typesys::RInteger} is just
+written as \code{RInteger}. Type variables must be written in lower case.
 }

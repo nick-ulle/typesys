@@ -40,7 +40,7 @@ test_that("Substitution called on Variable substitutes", {
 
 test_that("Substitution called on Constant has no effect", {
   sub = Substitution(x = Variable("y"))
-  result = sub(new("typesys::Constant"))
+  result = sub(RComplex)
 
   expect_is(result, "typesys::Constant")
 })

@@ -2,7 +2,6 @@
 #
 
 #' @include terms.R
-#' @include types.R
 NULL
 
 setMethod("!=", c("typesys::Term", "ANY"), function(e1, e2) TRUE)

@@ -22,14 +22,13 @@ Suggests:
     rmarkdown
 RoxygenNote: 6.1.0
 Collate:
-    'type_environment.R'
     'terms.R'
-    'types.R'
     'compare.R'
     'compute_join.R'
     'constraint.R'
     'substitution.R'
     'extract.R'
+    'type_environment.R'
     'format.R'
     'formula_to_type.R'
     'generics.R'

@@ -1,5 +1,4 @@
 #' @include terms.R
-#' @include types.R
 #' @include type_environment.R
 NULL
 

@@ -1,5 +1,22 @@
-#' @include types.R
+#' @include terms.R
 NULL
+
+#' @exportClass typesys::RVector
+setClass("typesys::RVector", contains = "typesys::Composite")
+setValidity("typesys::RVector", function(object) {
+  if (length(object@components) == 1L)
+    TRUE
+  else
+    "must have exactly 1 type argument"
+})
+
+#' @export
+RVector = function(...) {
+  new("typesys::RVector", args = list(...))
+}
+
+
+# Constants ----------------------------------------
 
 setClass("typesys::RNull", contains = "typesys::Constant")
 setClass("typesys::REnvironment", contains = "typesys::Constant")

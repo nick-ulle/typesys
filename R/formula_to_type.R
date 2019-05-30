@@ -65,9 +65,9 @@ formula_to_type.call = function(x, quantify = FALSE) {
   name = as.character(x[[1]])
   switch(name
     , "c"      = lapply(x[-1], formula_to_type)
-    , "Join"   = do.call(Join, lapply(x[-1], formula_to_type))
-    , "Array"  = ArrayType(formula_to_type(x[[2]]))
-    , "Vector" = VectorType(formula_to_type(x[[2]]))
+    #, "Join"   = do.call(Join, lapply(x[-1], formula_to_type))
+    #, "Array"  = ArrayType(formula_to_type(x[[2]]))
+    , "RVector" = RVector(formula_to_type(x[[2]]))
     , stop(sprintf("Unrecognized type constructor '%s'.", name))
   )
 }

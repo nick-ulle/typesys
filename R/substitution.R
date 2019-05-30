@@ -1,4 +1,4 @@
-#' @include types.R
+#' @include terms.R
 NULL
 
 #' @export

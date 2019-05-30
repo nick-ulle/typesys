@@ -23,8 +23,15 @@ setValidity("typesys::Variable", function(object) {
 Variable = function(name) new("typesys::Variable", name = name)
 
 
+#' @exportClass typesys::Constant
+setClass("typesys::Constant", contains = c("typesys::Term", "VIRTUAL"))
+
+
+
+# Composites ----------------------------------------
+
 #' @exportClass typesys::Composite
-setClass("typesys::Composite", contains = "typesys::Term",
+setClass("typesys::Composite", contains = c("typesys::Term", "VIRTUAL"),
   slots = list(
     components = "list"
   ))
@@ -35,9 +42,33 @@ setValidity("typesys::Composite", function(object) {
     "components must subclass typesys::Term"
 })
 
+#' @exportClass typesys::Function
+setClass("typesys::Function", contains = "typesys::Composite")
+setValidity("typesys::Function", function(object) {
+  if (length(object@components) > 0L)
+    TRUE
+  else
+    "must have return type (at least 1 component)"
+})
 
-#' @exportClass typesys::Constant
-setClass("typesys::Constant", contains = "typesys::Term")
+Function = function(..., return_type) {
+  components = list(...)
+  len = length(components)
+
+  # Check if argument types are in a list.
+  if (len == 1L && is.list(components[[1L]])) {
+    components = components[[1L]]
+    len = length(components)
+  }
+
+  # Check if return type is separate.
+  if (!missing(return_type)) {
+    len = len + 1L
+    components[[len]] = return_type
+  }
+
+  new("typesys::Function", components = components)
+}
 
 
 # Applications are ?<?>, where both the type applied and the type arguments are
