@@ -34,7 +34,6 @@ Collate:
     'generics.R'
     'get.R'
     'match.R'
-    'methods.R'
     'names.R'
     'quantify.R'
     'r_types.R'
