@@ -4,8 +4,22 @@
 \alias{do_substitution}
 \title{Apply a Substitution}
 \usage{
-do_substitution(exp, sub)
+do_substitution(term, sub)
+}
+\arguments{
+\item{term}{A Term or Substitution object.}
+
+\item{sub}{A Substitution object to apply.}
+}
+\value{
+An object of the same class as \code{term}.
 }
 \description{
-Apply a Substitution
+This generic function applies a Substitution to a Term or to another
+Substitution (composition).
+}
+\details{
+Substitutions are callable, and this is the generic they call. For clarity,
+calling a Substitution directly on a term is preferable to calling this
+function.
 }

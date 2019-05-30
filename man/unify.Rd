@@ -4,7 +4,7 @@
 \alias{unify}
 \title{Robinson's Unification Algorithm}
 \usage{
-unify(x, y, sub = Substitution())
+unify(e1, e2, sub = Substitution(), ...)
 }
 \description{
 Given two types, this method returns a substitution that can be applied to
