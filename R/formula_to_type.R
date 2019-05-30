@@ -23,10 +23,10 @@ formula_to_type.formula = function(x, quantify = FALSE) {
   } else if (length(x) == 3) {
     args = formula_to_type(x[[2]])
     return_type = formula_to_type(x[[3]])
-    if (!is(return_type, "typesys::Type"))
+    if (!is(return_type, "typesys::Term"))
       stop("Invalid return type.")
 
-    type = FunctionType(args, return_type)
+    type = Function(args, return_type = return_type)
   }
 
   if (quantify) quantify(type)
@@ -38,22 +38,22 @@ formula_to_type.formula = function(x, quantify = FALSE) {
 formula_to_type.name = function(x, quantify = FALSE) {
   name = as.character(x)
   if (grepl("^[a-z]", name))
-    return (TypeVariable(name))
+    return (Variable(name))
 
   # Check if this is a literal type.
   switch(name
-    , "Null"        = NullType()
-    , "Environment" = EnvironmentType()
+    , "Null"        = NullType
+    , "Environment" = EnvironmentType
     # Use "Char" instead of "Character" for the scalar string type, to avoid
     # mixups with R's "character" vectors (which are "String" here).
-    , "Char"        = CharacterType()
-    , "Logical"     = LogicalType()
-    , "Integer"     = IntegerType()
-    , "Numeric"     = NumericType()
-    , "Complex"     = ComplexType()
-    , "String"      = StringType()
-    , "ExternalPtr" = ExternalPtrType()
-    , "Raw"         = RawType()
+    , "Char"        = CharacterType
+    , "Logical"     = LogicalType
+    , "Integer"     = IntegerType
+    , "Numeric"     = NumericType
+    , "Complex"     = ComplexType
+    , "String"      = StringType
+    , "ExternalPtr" = ExternalPtrType
+    , "Raw"         = RawType
     , "Character"   =
       stop("Unrecognized type 'Character'. Did you mean 'String'?")
     , stop(sprintf("Unrecognized type '%s'.", name))
@@ -75,4 +75,4 @@ formula_to_type.call = function(x, quantify = FALSE) {
 
 
 #' @export
-`formula_to_type.typesys::Type` = function(x, quantify = FALSE) x
+`formula_to_type.typesys::Term` = function(x, quantify = FALSE) x
