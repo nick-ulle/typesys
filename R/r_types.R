@@ -1,51 +1,50 @@
 #' @include types.R
 NULL
 
-#' @export
-NullType = function(...) new("typesys::NullType", ...)
-setClass("typesys::NullType", contains = "typesys::AtomicType")
+setClass("typesys::NullType", contains = "typesys::Constant")
+setClass("typesys::EnvironmentType", contains = "typesys::Constant")
+# Single character (like C "character" type):
+setClass("typesys::CharacterType", contains = "typesys::Constant")
+# Multiple characters (like scalar R "character" type):
+setClass("typesys::StringType", contains = "typesys::Constant")
+setClass("typesys::LogicalType", contains = "typesys::Constant")
+setClass("typesys::IntegerType", contains = "typesys::Constant")
+# Double-precision floating point:
+setClass("typesys::NumericType", contains = "typesys::Constant")
+setClass("typesys::ComplexType", contains = "typesys::Constant")
+# TODO: list
+setClass("typesys::ExternalPtrType", contains = "typesys::Constant")
+setClass("typesys::RawType", contains = "typesys::Constant")
 
 #' @export
-EnvironmentType = function(...) new("typesys::EnvironmentType", ...)
-setClass("typesys::EnvironmentType", contains = "typesys::AtomicType")
-
-# Single characters, e.g., a C "character".
-#' @export
-CharacterType = function(...) new("typesys::CharacterType", ...)
-setClass("typesys::CharacterType", contains = "typesys::AtomicType")
+NullType = new("typesys::NullType")
 
 #' @export
-LogicalType = function(...) new("typesys::LogicalType", ...)
-setClass("typesys::LogicalType", contains = "typesys::AtomicType")
+EnvironmentType = new("typesys::EnvironmentType")
 
 #' @export
-IntegerType = function(...) new("typesys::IntegerType", ...)
-setClass("typesys::IntegerType", contains = "typesys::AtomicType")
-
-# Double-precision floating point.
-#' @export
-NumericType = function(...) new("typesys::NumericType", ...)
-setClass("typesys::NumericType", contains = "typesys::AtomicType")
+CharacterType = new("typesys::CharacterType")
 
 #' @export
-ComplexType = function(...) new("typesys::ComplexType", ...)
-setClass("typesys::ComplexType", contains = "typesys::AtomicType")
-
-# A string, e.g., an R "character".
-#' @export
-StringType = function(...) new("typesys::StringType", ...)
-setClass("typesys::StringType", contains = "typesys::AtomicType")
-
-# list:	a list
+LogicalType = new("typesys::LogicalType")
 
 #' @export
-ExternalPtrType = function(...) new("typesys::ExternalPtrType", ...)
-setClass("typesys::ExternalPtrType", contains = "typesys::AtomicType")
+IntegerType = new("typesys::IntegerType")
 
 #' @export
-RawType = function(...) new("typesys::StringType", ...)
-setClass("typesys::StringType", contains = "typesys::AtomicType")
+NumericType = new("typesys::NumericType")
 
+#' @export
+ComplexType = new("typesys::ComplexType")
+
+#' @export
+StringType = new("typesys::StringType")
+
+#' @export
+ExternalPtrType = new("typesys::ExternalPtrType")
+
+#' @export
+RawType = new("typesys::RawType")
 
 # Low Priority ----------------------------------------
 # S4: an S4 object which is not a simple object
