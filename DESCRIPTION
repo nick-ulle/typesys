@@ -39,7 +39,6 @@ Collate:
     'simplify.R'
     'typesys.R'
     'unify.R'
-    'union_type.R'
     'utilities.R'
     'values.R'
 VignetteBuilder: knitr
