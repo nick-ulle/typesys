@@ -40,6 +40,18 @@ format.TypeEnvironment = function(x, ...) {
 #' @export
 print.TypeEnvironment = .print
 
+setMethod("format", signature("typesys::Equality"),
+  function(x, ...) {
+    sprintf("%s ~= %s", format(x@t1), format(x@t2))
+  })
+
+setMethod("format", signature("typesys::ImplicitInstance"),
+  function(x, ...) {
+    sprintf("%s <= %s", format(x@t1), format(x@t2))
+  })
+
+setMethod("show", signature("typesys::Constraint"), .show)
+
 setMethod("format", signature("typesys::Term"), default_class_format)
 
 #' @export

@@ -27,7 +27,7 @@ Collate:
     'types.R'
     'compare.R'
     'compute_join.R'
-    'equation.R'
+    'constraint.R'
     'substitution.R'
     'extract.R'
     'format.R'
