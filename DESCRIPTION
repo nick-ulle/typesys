@@ -24,7 +24,6 @@ RoxygenNote: 6.1.0
 Collate:
     'terms.R'
     'compare.R'
-    'compute_join.R'
     'constraint.R'
     'substitution.R'
     'extract.R'
