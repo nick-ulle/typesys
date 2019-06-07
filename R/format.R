@@ -39,9 +39,9 @@ format.TypeEnvironment = function(x, ...) {
 #' @export
 print.TypeEnvironment = .print
 
-setMethod("format", signature("typesys::Equality"),
+setMethod("format", signature("typesys::Equivalence"),
   function(x, ...) {
-    sprintf("%s ~= %s", format(x@t1), format(x@t2))
+    sprintf("%s == %s", format(x@t1), format(x@t2))
   })
 
 setMethod("format", signature("typesys::ImplicitInstance"),

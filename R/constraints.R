@@ -14,16 +14,18 @@ setClass("typesys::Constraint", contains = "VIRTUAL",
     t2 = "typesys::Term"
   ))
 
-#' @exportClass typesys::Equality
-setClass("typesys::Equality", contains = "typesys::Constraint")
+#' @exportClass typesys::Equivalence
+setClass("typesys::Equivalence", contains = "typesys::Constraint")
 
-Equality = function(t1, t2) {
-  new("typesys::Equality", t1 = t1, t2 = t2)
+#' @export
+Equivalence = function(t1, t2) {
+  new("typesys::Equivalence", t1 = t1, t2 = t2)
 }
 
 #' @exportClass typesys::ImplicitInstance
 setClass("typesys::ImplicitInstance", contains = "typesys::Constraint")
 
+#' @export
 ImplicitInstance = function(t1, t2, m) {
   new("typesys::ImplicitInstance", t1 = t1, t2 = t2)
 }
