@@ -96,3 +96,15 @@ setMethod("do_substitution", signature("typesys::Substitution"),
 
     term
   })
+
+#' @export
+setMethod("do_substitution", signature("typesys::Constraint"),
+  function(term, sub) {
+    # TODO: Add tests for this method
+    # Apply substitution to both sides.
+    term@t1 = sub(term@t1)
+    term@t2 = sub(term@t2)
+    # FIXME: Also need to apply to m for instance constraints.
+
+    term
+  })
