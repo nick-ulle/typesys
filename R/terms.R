@@ -53,17 +53,15 @@ setValidity("typesys::Function", function(object) {
 
 Function = function(..., return_type) {
   components = list(...)
-  len = length(components)
 
-  # Check if argument types are in a list.
-  if (len == 1L && is.list(components[[1L]])) {
-    components = components[[1L]]
-    len = length(components)
+  # Flatten first element if a list.
+  if (length(components) > 0L && is.list(components[[1L]])) {
+    components = c(components[[1L]], components[-1L])
   }
 
-  # Check if return type is separate.
+  # Check return_type parameter.
   if (!missing(return_type)) {
-    len = len + 1L
+    len = length(components) + 1L
     components[[len]] = return_type
   }
 

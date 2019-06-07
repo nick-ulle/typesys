@@ -16,6 +16,14 @@ RVector = function(...) {
 }
 
 
+#' @exportClass typesys::RFunction
+setClass("typesys::RFunction", contains = "typesys::Function")
+
+#' @export
+RFunction = function(...) {
+  new("typesys::RFunction", Function(...))
+}
+
 # Constants ----------------------------------------
 
 setClass("typesys::RNull", contains = "typesys::Constant")
