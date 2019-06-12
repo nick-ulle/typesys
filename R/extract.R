@@ -15,6 +15,23 @@ setMethod("[[", signature("typesys::Substitution", "typesys::Variable"),
   })
 
 #' @export
+setMethod("[[<-", signature("typesys::Substitution"),
+  function(x, i, ..., value) {
+    x@map[[i, ...]] = value
+    validObject(x)
+    x
+  })
+
+#' @export
+setMethod("[[<-", signature("typesys::Substitution", "typesys::Variable"),
+  function(x, i, ..., value) {
+    x@map[[i@name, ...]] = value
+    validObject(x)
+    x
+  })
+
+
+#' @export
 setMethod("[", signature("typesys::Substitution"),
   function(x, i, ...) {
     x@map[i, ...]
