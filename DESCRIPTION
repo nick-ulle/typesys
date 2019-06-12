@@ -1,6 +1,6 @@
 Package: typesys
 Title: General-purpose Abstract Type System
-Version: 0.3.0-0006
+Version: 0.3.0-0007
 Authors@R: person("Nick", "Ulle",  role = c("aut", "cre"),
     email = "nick.ulle@gmail.com")
 Description: This package provides an abstraction of common data types, so that
@@ -19,7 +19,8 @@ Imports:
 Suggests:
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    rstatic
 RoxygenNote: 6.1.1
 Collate:
     'terms.R'
@@ -32,6 +33,7 @@ Collate:
     'formula_to_type.R'
     'generics.R'
     'get.R'
+    'instantiate.R'
     'match.R'
     'names.R'
     'quantify.R'

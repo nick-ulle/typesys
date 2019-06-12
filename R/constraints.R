@@ -23,11 +23,14 @@ Equivalence = function(t1, t2) {
 }
 
 #' @exportClass typesys::ImplicitInstance
-setClass("typesys::ImplicitInstance", contains = "typesys::Constraint")
+setClass("typesys::ImplicitInstance", contains = "typesys::Constraint",
+  slots = list(
+    monomorphic = "list"
+  ))
 
 #' @export
-ImplicitInstance = function(t1, t2, m) {
-  new("typesys::ImplicitInstance", t1 = t1, t2 = t2)
+ImplicitInstance = function(t1, t2, monomorphic = list()) {
+  new("typesys::ImplicitInstance", t1 = t1, t2 = t2, monomorphic = monomorphic)
 }
 
 ## #' @exportClass typesys::ExplicitInstance
