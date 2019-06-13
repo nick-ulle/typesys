@@ -7,10 +7,9 @@
 #' @export
 setGeneric("unify",
   function(e1, e2, sub = Substitution(), ...) {
-    if (!is(e1, "typesys::Constraint")) {
-      e1 = sub(e1)
+    e1 = sub(e1)
+    if (!missing(e2))
       e2 = sub(e2)
-    }
 
     standardGeneric("unify")
   })
