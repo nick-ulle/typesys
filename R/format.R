@@ -39,18 +39,30 @@ format.TypeEnvironment = function(x, ...) {
 #' @export
 print.TypeEnvironment = .print
 
+#' @export
 setMethod("format", signature("typesys::Equivalence"),
   function(x, ...) {
     sprintf("%s == %s", format(x@t1), format(x@t2))
   })
 
+#' @export
 setMethod("format", signature("typesys::ImplicitInstance"),
   function(x, ...) {
-    sprintf("%s <= %s", format(x@t1), format(x@t2))
+    t1 = format(x@t1)
+    t2 = format(x@t2)
+
+    if (length(x@monomorphic) == 0L)
+      return (sprintf("%s <= %s", t1, t2))
+
+    m = vapply(x@monomorphic, format, NA_character_)
+    m = paste0(m, collapse = ", ")
+    sprintf("%s <= %s; monomorphic %s", t1, t2, m)
   })
 
+#' @export
 setMethod("show", signature("typesys::Constraint"), .show)
 
+#' @export
 setMethod("format", signature("typesys::Term"), default_class_format)
 
 #' @export
@@ -70,6 +82,7 @@ setMethod("format", signature("typesys::Composite"),
     sprintf("%s[%s]", comp, paste(args, collapse = ", "))
   })
 
+#' @export
 setMethod("format", signature("typesys::Function"),
   function(x, ...) {
     comp = vapply(x@components, format, NA_character_)
