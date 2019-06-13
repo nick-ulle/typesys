@@ -31,6 +31,16 @@ setMethod("unify", signature("typesys::Constraint"),
   }
 )
 
+#' @export
+setMethod("unify", signature("typesys::ImplicitInstance"),
+  function(e1, e2, sub, ..., counter = NULL) {
+    # Generalize and instantiate t2.
+    e1 = instantiate(e1, counter = counter)
+    unify(e1@t1, e1@t2, sub, ...)
+  }
+)
+
+
 # Atomic Types ----------------------------------------
 
 #' @export

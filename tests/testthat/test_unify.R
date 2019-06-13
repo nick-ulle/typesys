@@ -1,7 +1,7 @@
 context("unify")
 
 
-test_that("Variable and constant", {
+test_that("Variable and Constant", {
   x = Variable("a")
   y = RInteger
 
@@ -19,7 +19,7 @@ test_that("Variable and constant", {
 })
 
 
-test_that("Variable and function", {
+test_that("Variable and Function", {
   x = formula_to_type(a ~ RInteger)
   y = Variable("b")
 
@@ -35,7 +35,7 @@ test_that("Variable and function", {
 })
 
 
-test_that("Function and function", {
+test_that("Function and Function", {
   x = formula_to_type(a ~ RInteger)
   y = formula_to_type(RNumeric ~ RInteger)
 
@@ -60,4 +60,32 @@ test_that("Incompatible types", {
   expect_error(unify(x, y))
   expect_error(unify(y, x))
   expect_error(unify(x, z))
+})
+
+
+test_that("ImplicitInstance", {
+  f1 = RFunction(RNumeric, Variable("a"))
+  f2 = RFunction(Variable("b"), Variable("b"))
+  con = ImplicitInstance(f1, f2)
+  sub = Substitution(x = Variable("b"))
+
+  result = unify(con, sub)
+
+  # -----
+  expect_is(result[["a"]], "typesys::RNumeric")
+
+  # Check that b was instantiated by checking that no type was found for b.
+  expect_false("b" %in% names(result))
+})
+
+test_that("Equivalence", {
+  eq = Equivalence(RInteger, Variable("a"))
+  result = unify(eq)
+
+  expect_is(result, "typesys::Substitution")
+  expect_equal(length(result), 1)
+  expect_is(result[["a"]], "typesys::RInteger")
+
+  eq2 = Equivalence(RInteger, RNumeric)
+  expect_error(unify(eq2))
 })
