@@ -1,6 +1,6 @@
 Package: typesys
 Title: General-purpose Abstract Type System
-Version: 0.3.0-0019
+Version: 0.3.0-0020
 Authors@R: person("Nick", "Ulle",  role = c("aut", "cre"),
     email = "nick.ulle@gmail.com")
 Description: This package provides an abstraction of common data types, so that
@@ -41,7 +41,6 @@ Collate:
     'subset.R'
     'typesys.R'
     'unify.R'
-    'utilities.R'
     'values.R'
 VignetteBuilder: knitr
 Encoding: UTF-8
