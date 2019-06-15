@@ -1,4 +1,4 @@
-# Getters and setters for S4 classes.
+# Getters and setters for Term objects.
 
 #' @export
 setGeneric("args")
