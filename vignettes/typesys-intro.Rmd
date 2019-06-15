@@ -13,14 +13,14 @@ vignette: >
 library(typesys)
 ```
 
-The __typesys__ package formalizes R's type system into a simple language.
+The __typesys__ package formalizes R's type system into a simple language. The
+building blocks of the type language are constants and type variables.
 
-The most basic expressions in the type language are constant types, such as
-`RInteger` and `RLogical`. Unlike R's `typeof()` function, we distinguish
-between scalars and vectors. Constant types always describe scalar values. For
-example, `RInteger` is a scalar integer. Generally, the names of the constant
-types match the names returned by `typeof()` up to capitalization. There are
-two exceptions:
+Constant types represent concrete types. For instance, the constant type
+`RInteger` represents the type of a scalar integer in R. Unlike R, scalars and
+vectors have distinct (but related) types. Representatives for R types all have
+names that begin with "R", and generally follow the names
+returned by `typeof()`. There are two exceptions:
 
 1. An R "double" corresponds to the `RNumeric` type.
 1. An R "character" corresponds to the `RString` type.
@@ -28,16 +28,9 @@ two exceptions:
 The names `RNumeric` and `RString` were chosen because they give clearer
 descriptions of the values that are actually in their respective types.
 
-If we want to create a new `RInteger` type, we can write
-```{r}
-RInteger
-```
-The output of this function is an S4 class that represents an `RInteger`.
-Similar constructor functions exist for every other constant type.
-
-The type language also includes type variables, which are named placeholders
-for unknown types. The constructor for type variables requires a name to be
-specififed. To create a type variable called `a`, we can write
+Type variables are named placeholders for unknown types. The constructor for
+type variables requires a name to be specififed. The code to create a type
+variable called `a` is:
 ```{r}
 Variable("a")
 ```
