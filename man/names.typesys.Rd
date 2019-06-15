@@ -6,7 +6,7 @@
 \alias{names,typesys::Constant-method}
 \alias{names,typesys::Composite-method}
 \alias{names<-,typesys::Variable-method}
-\title{Variable Names}
+\title{Get Variable Names}
 \usage{
 \S4method{names}{`typesys::Variable`}(x)
 
@@ -23,6 +23,8 @@
 A character vector of variable names.
 }
 \description{
-Functions to get the variable names in a Term. Names can only be set on a
-Variable.
+Methods to get the names of variables in a Term.
+}
+\details{
+Names can only be set on a Variable object.
 }
