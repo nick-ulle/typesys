@@ -3,7 +3,6 @@
 #' A type environment maps names to types. The idea is analagous to how an R
 #' environment maps names to values.
 #'
-#' @export
 TypeEnvironment = R6::R6Class("TypeEnvironment",
   "public" = list(
     parent = NULL,
@@ -27,28 +26,23 @@ TypeEnvironment = R6::R6Class("TypeEnvironment",
 
 setOldClass("TypeEnvironment")
 
-#' @export
 `[.TypeEnvironment` = function(x, i) {
   TypeEnvironment$new(x$objects[i])
 }
 
-#' @export
 `[[.TypeEnvironment` = function(x, i) {
   x$objects[[i]]
 }
 
-#' @export
 `[[<-.TypeEnvironment` = function(x, i, value) {
   x$objects[[i]] = value
   x
 }
 
-#' @export
 length.TypeEnvironment = function(x) {
   length(x$objects)
 }
 
-#' @export
 names.TypeEnvironment = function(x) {
   names(x$objects)
 }

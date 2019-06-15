@@ -11,7 +11,6 @@ setClass("typesys::Value")
 #' Basic unknown value class. Later this could be expanded to a reference
 #' system.
 #'
-#' @export
 UnknownValue = function() new("typesys::UnknownValue")
 setClass("typesys::UnknownValue", contains = "typesys::Value")
 
@@ -19,7 +18,6 @@ setClass("typesys::UnknownValue", contains = "typesys::Value")
 #'
 #' A symbol.
 #'
-#' @export
 SymbolValue = function(name) new("typesys::SymbolValue", name = name)
 setClass("typesys::SymbolValue", contains = "typesys::Value",
   slots = list(
@@ -27,10 +25,8 @@ setClass("typesys::SymbolValue", contains = "typesys::Value",
   )
 
 
-#' @export
 setMethod("format", signature(x = "typesys::UnknownValue"),
   function(x, indent = 0, ...) "?")
 
-#' @export
 setMethod("format", signature(x = "typesys::SymbolValue"),
   function(x, indent = 0, ...) x@name)

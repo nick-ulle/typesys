@@ -26,20 +26,6 @@ format.Substitution = function(x, ...) {
 print.Substitution = .print
 
 #' @export
-format.TypeEnvironment = function(x, ...) {
-  if (length(x) == 0)
-    return("TypeEnvironment (0 elements)\n")
-
-  vals = vapply(x$objects, format, NA_character_)
-  a = paste0(sprintf("%s: %s", names(x), vals), collapse = "\n")
-
-  sprintf("TypeEnvironment (%i elements)\n%s\n", length(x), a)
-}
-
-#' @export
-print.TypeEnvironment = .print
-
-#' @export
 setMethod("format", signature("typesys::Equivalence"),
   function(x, ...) {
     sprintf("%s == %s", format(x@t1), format(x@t2))
@@ -136,10 +122,22 @@ setMethod("format", signature("typesys::Function"),
 #' @export
 setMethod("show", signature(object = "typesys::Term"), .show)
 
-
+# Private ----------------------------------------
 format_quantified = function(quantified) {
   if (length(quantified) == 0)
     ""
   else
     sprintf("∀%s. ", paste(quantified, collapse = ", "))
 }
+
+format.TypeEnvironment = function(x, ...) {
+  if (length(x) == 0)
+    return("TypeEnvironment (0 elements)\n")
+
+  vals = vapply(x$objects, format, NA_character_)
+  a = paste0(sprintf("%s: %s", names(x), vals), collapse = "\n")
+
+  sprintf("TypeEnvironment (%i elements)\n%s\n", length(x), a)
+}
+
+print.TypeEnvironment = .print
