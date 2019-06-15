@@ -1,21 +1,20 @@
-#' Convert a Formula to a Type Expression
+#' Construct R Types from Formula Notation
 #'
-#' This function makes it possible to write type expressions concisely using a
-#' formula-based language.
+#' This function makes it possible to write R type expressions concisely using
+#' a formula-based language.
 #'
 #' Literal types have the same names and capitalization as their S4 classes,
 #' but with \code{typesys::} excluded. So \code{typesys::RInteger} is just
 #' written as \code{RInteger}. Type variables must be written in lower case.
 #'
 #' @param x (formula) The formula to convert to a type expression.
-#' @param quantify (logical) Quantify the type variables?
 #'
 #' @export
-formula_to_type = function(x, quantify = FALSE) UseMethod("formula_to_type")
+formula_to_type = function(x) UseMethod("formula_to_type")
 
 
 #' @export
-formula_to_type.formula = function(x, quantify = FALSE) {
+formula_to_type.formula = function(x) {
   if (length(x) == 2) {
     type = formula_to_type(x[[2]])
 
@@ -25,16 +24,15 @@ formula_to_type.formula = function(x, quantify = FALSE) {
     if (!is(return_type, "typesys::Term"))
       stop("Invalid return type.")
 
-    type = Function(args, return_type = return_type)
+    type = RFunction(args, return_type = return_type)
   }
 
-  if (quantify) quantify(type)
-  else type
+  type
 }
 
 
 #' @export
-formula_to_type.name = function(x, quantify = FALSE) {
+formula_to_type.name = function(x) {
   name = as.character(x)
   if (grepl("^[a-z]", name))
     return (Variable(name))
@@ -61,7 +59,7 @@ formula_to_type.name = function(x, quantify = FALSE) {
 
 
 #' @export
-formula_to_type.call = function(x, quantify = FALSE) {
+formula_to_type.call = function(x) {
   name = as.character(x[[1]])
   switch(name
     , "c"      = lapply(x[-1], formula_to_type)
@@ -74,4 +72,4 @@ formula_to_type.call = function(x, quantify = FALSE) {
 
 
 #' @export
-`formula_to_type.typesys::Term` = function(x, quantify = FALSE) x
+`formula_to_type.typesys::Term` = function(x) x

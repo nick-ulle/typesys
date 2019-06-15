@@ -2,18 +2,16 @@
 % Please edit documentation in R/formula_to_type.R
 \name{formula_to_type}
 \alias{formula_to_type}
-\title{Convert a Formula to a Type Expression}
+\title{Construct R Types from Formula Notation}
 \usage{
-formula_to_type(x, quantify = FALSE)
+formula_to_type(x)
 }
 \arguments{
 \item{x}{(formula) The formula to convert to a type expression.}
-
-\item{quantify}{(logical) Quantify the type variables?}
 }
 \description{
-This function makes it possible to write type expressions concisely using a
-formula-based language.
+This function makes it possible to write R type expressions concisely using
+a formula-based language.
 }
 \details{
 Literal types have the same names and capitalization as their S4 classes,
