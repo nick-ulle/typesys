@@ -1,7 +1,3 @@
-
-#' @include generics.R
-NULL
-
 # NOTE: This base class is a workaround because R assumes empty base classes
 # are virtual.
 setClass("typesys::Value")
