@@ -2,12 +2,6 @@
 #
 # S4 generics for type classes.
 
-#' Format a Type for Printing
-#'
-#' This function converts a Type to a character string.
-#'
-#' @export
-setGeneric("format")
 
 #' Test Types for Equality
 #'
