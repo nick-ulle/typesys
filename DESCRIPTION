@@ -1,6 +1,6 @@
 Package: typesys
 Title: General-purpose Abstract Type System
-Version: 0.3.0-0014
+Version: 0.3.0-0015
 Authors@R: person("Nick", "Ulle",  role = c("aut", "cre"),
     email = "nick.ulle@gmail.com")
 Description: This package provides an abstraction of common data types, so that
@@ -26,8 +26,6 @@ Collate:
     'terms.R'
     'compare.R'
     'constraints.R'
-    'substitution.R'
-    'extract.R'
     'type_environment.R'
     'format.R'
     'format_constraints.R'
@@ -38,6 +36,8 @@ Collate:
     'match.R'
     'names.R'
     'r_types.R'
+    'substitution.R'
+    'subset.R'
     'typesys.R'
     'unify.R'
     'utilities.R'

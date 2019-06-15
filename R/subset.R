@@ -1,6 +1,9 @@
+# General methods to take subsets.
+
 #' @include terms.R
 #' @include substitution.R
 NULL
+
 
 #' @export
 setMethod("[[", signature("typesys::Substitution"),
@@ -8,11 +11,13 @@ setMethod("[[", signature("typesys::Substitution"),
     x@map[[i, ...]]
   })
 
+
 #' @export
 setMethod("[[", signature("typesys::Substitution", "typesys::Variable"),
   function(x, i, ...) {
     x@map[[i@name, ...]]
   })
+
 
 #' @export
 setMethod("[[<-", signature("typesys::Substitution"),
@@ -21,6 +26,7 @@ setMethod("[[<-", signature("typesys::Substitution"),
     validObject(x)
     x
   })
+
 
 #' @export
 setMethod("[[<-", signature("typesys::Substitution", "typesys::Variable"),
@@ -36,6 +42,7 @@ setMethod("[", signature("typesys::Substitution"),
   function(x, i, ...) {
     x@map[i, ...]
   })
+
 
 #' @export
 setMethod("[<-", signature("typesys::Substitution"),
