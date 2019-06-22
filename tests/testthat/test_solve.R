@@ -1,6 +1,18 @@
 context("solve")
 
 
+test_that("Inconsistent constraint set raises error", {
+  x = Variable("x")
+  y = Variable("y")
+  cons = list(
+    ImplicitInstance(x, y)
+    , ImplicitInstance(y, x)
+  )
+
+  expect_error(solve(cons, rstatic::Counter$new(), 100L))
+})
+
+
 test_that("Variables are polymorphic", {
   skip_if_not_installed("RTypeInference", "0.5.0")
   skip_if_not_installed("rstatic")

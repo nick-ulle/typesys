@@ -4,12 +4,15 @@
 \alias{solve}
 \title{Solve a List of Constraints}
 \usage{
-solve(constraints, counter)
+solve(constraints, counter, max_deferred = 1000L)
 }
 \arguments{
-\item{constraints}{List of Constraint objects to solve.}
+\item{constraints}{(list) A list of Constraint objects to solve.}
 
-\item{counter}{Counter for generating new variables.}
+\item{counter}{(Counter) A Counter for generating new variables.}
+
+\item{max_deferred}{(integer) Maximum number of times the solver can defer
+constraints before concluding the system has no solutions.}
 }
 \value{
 The solution to the supplied constraints as a Substitution object.
