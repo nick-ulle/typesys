@@ -28,7 +28,7 @@ setMethod("format", signature("typesys::Composite"),
     name = substr(name, 10L, nchar(name))
 
     comp = vapply(x@components, format, NA_character_)
-    sprintf("%s[%s]", comp, paste(args, collapse = ", "))
+    sprintf("%s[%s]", name, paste(comp, collapse = ", "))
   })
 
 
