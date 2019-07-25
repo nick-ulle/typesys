@@ -38,7 +38,7 @@ setMethod("format", signature("typesys::Function"),
     comp = vapply(x@components, format, NA_character_)
     len = length(comp)
 
-    sprintf("%s → %s", paste(comp[-len], collapse = ", "), comp[len])
+    sprintf("(%s) → %s", paste(comp[-len], collapse = ", "), comp[len])
   })
 
 
