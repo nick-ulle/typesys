@@ -78,7 +78,7 @@ setMethod("unify", signature("typesys::Variable", "typesys::Term"),
     #
     # Check whether e1 occurs in e2; if it does, the substitution {e1 -> e2} is
     # circular, so unification fails.
-    if (e1 %in% e2)
+    if (e1 %occurs_in% e2)
       unification_error(e1, e2)
     else
       make_substitution(e1, e2)(sub)
