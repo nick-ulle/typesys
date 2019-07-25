@@ -42,6 +42,32 @@ setValidity("typesys::Composite", function(object) {
     "components must subclass typesys::Term"
 })
 
+
+#' @exportClass typesys::OneOf
+setClass("typesys::OneOf", contains = "typesys::Composite")
+
+#' @export
+OneOf =
+function(..., simplify = TRUE)
+{
+  components = list(...)
+
+  # Flatten first element if a list.
+  components = unlist(components, recursive = FALSE)
+
+  if (simplify) {
+    # Keep only unique terms.
+    components = unique(components)
+
+    # If only one term is left, return that term.
+    if (length(components) == 1L)
+      return (components[[1L]])
+  }
+
+  new("typesys::OneOf", components = components)
+}
+
+
 #' @exportClass typesys::Function
 setClass("typesys::Function", contains = "typesys::Composite")
 setValidity("typesys::Function", function(object) {

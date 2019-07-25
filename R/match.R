@@ -30,6 +30,14 @@ function(x, table, nomatch = 0L)
 })
 
 
+#' @export
+setMethod("match", signature("typesys::Term", "typesys::OneOf"),
+function(x, table, nomatch = 0L)
+{
+  callGeneric(x, table@components)
+})
+
+
 # NOTE: This makes `%in%` call the `match` generic instead of `base::match`.
 #' @export
 `%in%` =
