@@ -1,4 +1,4 @@
-context("solve")
+context("csolve")
 
 
 test_that("Inconsistent constraint set raises error", {
@@ -9,7 +9,7 @@ test_that("Inconsistent constraint set raises error", {
     , ImplicitInstance(y, x)
   )
 
-  expect_error(solve(cons, rstatic::Counter$new(), 100L))
+  expect_error(csolve(cons, rstatic::Counter$new(), 100L))
 })
 
 
@@ -43,7 +43,7 @@ test_that("Variables are polymorphic", {
   # I haven't written a function to map the solutions back to code variables
   # yet, but I'll add that to RTypeInference soon. 
   #
-  result2 = solve(cons, counter)
+  result2 = csolve(cons, counter)
 
   # -----
   #browser()
@@ -66,7 +66,7 @@ test_that("Variables from parameters are monomorphic", {
   cons = RTypeInference::constrain(node, counter = counter)[["constraints"]]
 
   # -----
-  expect_error(solve_types(cons, counter))
+  expect_error(csolve(cons, counter))
 })
 
 
@@ -85,5 +85,5 @@ test_that("Parameters are monomorphic", {
   cons = RTypeInference::constrain(node, counter = counter)[["constraints"]]
 
   # -----
-  expect_error(solve_types(cons, counter))
+  expect_error(csolve(cons, counter))
 })

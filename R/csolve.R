@@ -14,7 +14,9 @@
 #' Inference Algorithms.
 #'
 #' @export
-solve = function(constraints, counter, max_deferred = 1e3L) {
+csolve =
+function(constraints, counter, max_deferred = 1e3L)
+{
   sub = Substitution()
   is_equivalence = vapply(constraints, is, NA, "typesys::Equivalence")
 
