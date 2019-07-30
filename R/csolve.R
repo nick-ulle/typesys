@@ -29,17 +29,17 @@ setMethod("csolve", "list",
 function(x, counter, max_deferred = 1e3L, ...)
 {
   sub = Substitution()
-  is_equivalence = vapply(constraints, is, NA, "typesys::Equivalence")
+  is_equivalence = vapply(x, is, NA, "typesys::Equivalence")
 
   # First solve the equivalence constraints.
-  for (con in constraints[is_equivalence]) {
+  for (con in x[is_equivalence]) {
     update = unify(con, sub = sub)
     sub = update(sub)
   }
 
   # Now solve the instance constraints, which may need to be solved in a
   # specific order.
-  constraints = constraints[!is_equivalence]
+  constraints = x[!is_equivalence]
   constraints = lapply(constraints, sub)
 
   deferred = 0L

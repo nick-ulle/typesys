@@ -1,6 +1,6 @@
 Package: typesys
 Title: General-purpose Abstract Type System
-Version: 0.3.0-0029
+Version: 0.3.0-0030
 Authors@R: person("Nick", "Ulle",  role = c("aut", "cre"),
     email = "nick.ulle@gmail.com")
 Description: This package provides an abstraction of common data types, so that
