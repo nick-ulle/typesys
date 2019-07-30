@@ -23,9 +23,9 @@ setMethod("format", signature("typesys::ImplicitInstance"),
     t2 = format(x@t2)
 
     if (length(x@monomorphic) == 0L)
-      return (sprintf("%s <= %s", t1, t2))
+      return (sprintf("%s instance of %s", t1, t2))
 
     m = vapply(x@monomorphic, format, NA_character_)
     m = paste0(m, collapse = ", ")
-    sprintf("%s <= %s; monomorphic %s", t1, t2, m)
+    sprintf("%s instance of %s; monomorphic %s", t1, t2, m)
   })
