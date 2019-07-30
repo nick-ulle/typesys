@@ -2,10 +2,8 @@
 #'
 #' This function solves a list of constraints.
 #'
-#' @param constraints (list) A list of Constraint objects to solve.
-#' @param counter (Counter) A Counter for generating new variables.
-#' @param max_deferred (integer) Maximum number of times the solver can defer
-#' constraints before concluding the system has no solutions.
+#' @param x An object that contains a list of constraints to solve.
+#' @param ... Additional arguments to methods.
 #'
 #' @return The solution to the supplied constraints as a Substitution object.
 #'
@@ -14,8 +12,21 @@
 #' Inference Algorithms.
 #'
 #' @export
-csolve =
-function(constraints, counter, max_deferred = 1e3L)
+setGeneric("csolve",
+function(x, ...)
+  standardGeneric("csolve")
+)
+
+
+#' @param counter (Counter) A Counter for generating new variables.
+#' @param max_deferred (integer) Maximum number of times the solver can defer
+#' constraints before concluding the system has no solutions.
+#'
+#' @describeIn csolve Solve a list of constraints.
+#'
+#' @export
+setMethod("csolve", "list",
+function(x, counter, max_deferred = 1e3L, ...)
 {
   sub = Substitution()
   is_equivalence = vapply(constraints, is, NA, "typesys::Equivalence")
@@ -60,4 +71,4 @@ function(constraints, counter, max_deferred = 1e3L)
   }
 
   sub
-}
+})
