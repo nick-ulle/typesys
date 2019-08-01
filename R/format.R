@@ -1,8 +1,5 @@
 # General format, print, and show methods.
 
-#' @include type_environment.R
-NULL
-
 .print = function(x, ...) cat(format(x, ...), "\n")
 
 .show = function(object) cat(format(object, indent = 0), "\n")
@@ -35,28 +32,4 @@ format.Substitution = function(x, ...) {
   sub = paste0(sprintf("%s ↦ %s", names(x), vals), collapse = "\n")
 
   sprintf("Substitution (%i elements)\n%s\n", length(x), sub)
-}
-
-
-
-# OLD STUFF ----------------------------------------
-format_quantified = function(quantified) {
-  if (length(quantified) == 0)
-    ""
-  else
-    sprintf("∀%s. ", paste(quantified, collapse = ", "))
-}
-
-
-print.TypeEnvironment = .print
-
-
-format.TypeEnvironment = function(x, ...) {
-  if (length(x) == 0)
-    return("TypeEnvironment (0 elements)\n")
-
-  vals = vapply(x$objects, format, NA_character_)
-  a = paste0(sprintf("%s: %s", names(x), vals), collapse = "\n")
-
-  sprintf("TypeEnvironment (%i elements)\n%s\n", length(x), a)
 }
