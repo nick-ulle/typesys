@@ -6,26 +6,25 @@ NULL
 
 
 #' @export
-setMethod("show", signature(object = "typesys::Term"), .show)
+setMethod("show", signature("typesys::Term"), .show)
 
 
 #' @export
-setMethod("format", signature("typesys::Term"), default_class_format)
+setMethod("format", signature("typesys::Term"), format_class)
 
 
 #' @export
 setMethod("format", signature("typesys::Variable"),
-  function(x, ...) {
-    x@name
-  })
+function(x, ...)
+{
+  x@name
+})
 
 
 #' @export
 setMethod("format", signature("typesys::Composite"),
   function(x, ...) {
-    # Split off "typesys::"
-    name = class(x)[[1L]]
-    name = substr(name, 10L, nchar(name))
+    name = format_class(x, strip_namespace = TRUE)
 
     comp = vapply(x@components, format, NA_character_)
     sprintf("%s[%s]", name, paste(comp, collapse = ", "))

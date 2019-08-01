@@ -4,9 +4,18 @@
 
 .show = function(object) cat(format(object, indent = 0), "\n")
 
-default_class_format = function(x, ...) {
-  name = class(x)[[1L]]
-  sprintf("<%s>", name)
+format_class =
+function(x, ..., strip_namespace = TRUE)
+{
+  str = class(x)[[1L]]
+
+  if (strip_namespace) {
+    # Split off "typesys::"
+    str = strsplit(str, "::", fixed = TRUE)[[1L]]
+    str = str[length(str)]
+  }
+
+  sprintf("%s", str)
 }
 
 
