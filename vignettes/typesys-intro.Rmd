@@ -83,9 +83,7 @@ Thus we can express the type $(a, b) \to RInteger$ in formula notation as
 exp = c(a, b) ~ RInteger
 formula_to_type(exp)
 ```
-Here the function `formula_to_type()` converts the formula to a type. The type
-variables can optionally be quantified by setting the function's `quantify`
-parameter.
+Here the function `formula_to_type()` converts the formula to a type.
 
 
 ## Unification & Substitution
