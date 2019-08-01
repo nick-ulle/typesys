@@ -12,7 +12,7 @@ setValidity("typesys::RVector", function(object) {
 
 #' @export
 RVector = function(...) {
-  new("typesys::RVector", args = list(...))
+  new("typesys::RVector", components = list(...))
 }
 
 
