@@ -27,15 +27,15 @@ test_that("Variables are polymorphic", {
   })
 
   # Create a counter that will generate unique names for type variables.
-  counter = rstatic::Counter$new()
+  m = RTypeInference::SymbolMap()
 
   # Compute type constraints for the code above.
   #
   # The result is the list of constraints and also an InferHelper object that
   # records how code variables map to type variables.
   #
-  result1 = RTypeInference::constrain(node, counter = counter)
-  cons = result1[["constraints"]]
+  result1 = RTypeInference::constrain(node, m)
+  cons = result1@constraints
 
   # Solve the type constraints. The result is a substitution that maps type
   # variables to types.
@@ -43,7 +43,7 @@ test_that("Variables are polymorphic", {
   # I haven't written a function to map the solutions back to code variables
   # yet, but I'll add that to RTypeInference soon. 
   #
-  result2 = csolve(cons, counter)
+  result2 = csolve(cons, m@counter)
 
   # -----
   #browser()
@@ -62,11 +62,11 @@ test_that("Variables from parameters are monomorphic", {
     }
   })
 
-  counter = rstatic::Counter$new()
-  cons = RTypeInference::constrain(node, counter = counter)[["constraints"]]
+  m = RTypeInference::SymbolMap()
+  cons = RTypeInference::constrain(node, m)@constraints
 
   # -----
-  expect_error(csolve(cons, counter))
+  expect_error(csolve(cons, m@counter))
 })
 
 
@@ -81,9 +81,9 @@ test_that("Parameters are monomorphic", {
     }
   })
 
-  counter = rstatic::Counter$new()
-  cons = RTypeInference::constrain(node, counter = counter)[["constraints"]]
+  m = RTypeInference::SymbolMap()
+  cons = RTypeInference::constrain(node, m)@constraints
 
   # -----
-  expect_error(csolve(cons, counter))
+  expect_error(csolve(cons, m@counter))
 })
