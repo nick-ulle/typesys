@@ -11,15 +11,16 @@
 setClass("typesys::Constraint", contains = "VIRTUAL",
   slots = list(
     t1 = "typesys::Term",
-    t2 = "typesys::Term"
+    t2 = "typesys::Term",
+    src = "ANY"
   ))
 
 #' @exportClass typesys::Equivalence
 setClass("typesys::Equivalence", contains = "typesys::Constraint")
 
 #' @export
-Equivalence = function(t1, t2) {
-  new("typesys::Equivalence", t1 = t1, t2 = t2)
+Equivalence = function(t1, t2, src = NULL) {
+  new("typesys::Equivalence", t1 = t1, t2 = t2, src = src)
 }
 
 #' @exportClass typesys::ImplicitInstance
@@ -29,8 +30,9 @@ setClass("typesys::ImplicitInstance", contains = "typesys::Constraint",
   ))
 
 #' @export
-ImplicitInstance = function(t1, t2, monomorphic = list()) {
-  new("typesys::ImplicitInstance", t1 = t1, t2 = t2, monomorphic = monomorphic)
+ImplicitInstance = function(t1, t2, monomorphic = list(), src = NULL) {
+  new("typesys::ImplicitInstance", t1 = t1, t2 = t2, monomorphic = monomorphic,
+    src = src)
 }
 
 ## #' @exportClass typesys::ExplicitInstance
